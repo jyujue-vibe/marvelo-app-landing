@@ -12,8 +12,8 @@
   --indigo:#4A4FDE; --indigo-dark:#3A3EB8; --indigo-ink:#2E319E;
   --ink:#1B1B2F; --gray:#71717E; --line:#E4E4EF; --line2:#D5D5E4;
   --tint:#EEEEFB; --card:#FFFFFF;
-  --gold:#FFB703; --gold-deep:#E8930C; --gold-soft:#FFF3D6;
-  --orange:#FF8A1E; --emerald:#12B76A;
+  --gold:#FFB703; --gold-deep:#E8930C;
+  --emerald:#12B76A;
   --edge:#2E32A8; --cardline:#E2E2EE; --cardedge:#D8D8E8; --btnline:#DCDCE6; --btnedge:#C9C9D6; --goldedge:#B96F06;
 }
 *{margin:0;padding:0;box-sizing:border-box;box-shadow:none}
@@ -47,8 +47,6 @@ nav a{font-weight:600;font-size:14.5px;color:var(--gray);padding:9px 14px;border
 nav a:hover{background:var(--tint);color:var(--indigo-ink)}
 nav a.active{background:var(--tint);color:var(--indigo-ink)}
 .header-in .btn{margin-left:6px}
-.draft-note{max-width:760px;margin:16px auto 0;padding:0 20px}
-.draft-note div{background:var(--gold-soft);border:2px dashed var(--gold);color:#8A5A00;font-weight:600;font-size:13.5px;border-radius:14px;padding:10px 16px;text-align:center}
 /* ---------- Flow column ---------- */
 .flow-col{max-width:760px;margin:0 auto;padding:26px 20px 0}
 .page-title{font-size:20px;font-weight:700}
@@ -114,13 +112,6 @@ nav a.active{background:var(--tint);color:var(--indigo-ink)}
 .method-name{font-size:15px;font-weight:600}
 .method-amt{margin-left:auto;font-size:15px;font-weight:700}
 /* Points */
-.points-hero{margin-top:26px}
-.orange-panel{background:var(--orange);border-radius:0 0 24px 24px;padding:26px 20px 46px;text-align:center}
-.orange-panel .op-title{font-size:18px;font-weight:700;color:var(--ink)}
-.balance-card{position:relative;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:22px;padding:16px 18px;margin:-30px 14px 0;display:flex;align-items:center;gap:12px;text-align:left}
-.balance-card .b-lbl{font-size:12.5px;font-weight:600;color:var(--gray)}
-.balance-card .b-val{font-size:21px;font-weight:700;line-height:1.2}
-.balance-actions{display:flex;gap:12px;margin:12px 14px 0}.balance-actions .btn{flex:1;min-height:50px}.balance-actions .btn-primary{flex:1.35}
 .pack-list{display:flex;flex-direction:column;gap:12px}
 .pack-row{width:100%;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px;padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;text-align:left}
 .pack-row.sel{border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);padding:14px 18px}
@@ -184,7 +175,6 @@ footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
   </div>
 </header>
 
-<div class="draft-note"><div>Draft for review — front-end only, checkout does not process real payments.</div></div>
 
 <main class="flow-col">
   <h1 class="page-title">Shop</h1>
@@ -280,22 +270,6 @@ footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
 
   <!-- STEP: POINTS -->
   <section class="step" id="step-points">
-    <div class="points-hero">
-      <div class="orange-panel">
-        <div class="op-title">Your Point Balance</div>
-      </div>
-      <div class="balance-card">
-        <span class="coin lg">★</span>
-        <div>
-          <div class="b-lbl">Your Point Balance</div>
-          <div class="b-val">12,000</div>
-        </div>
-      </div>
-      <div class="balance-actions">
-        <button type="button" class="btn btn-primary"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg> Redeem Gift</button>
-        <button type="button" class="btn btn-outline"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline><polyline points="12 7 12 12 15 14"></polyline></svg> Point History</button>
-      </div>
-    </div>
 
     <div class="group-head">Purchase Points</div>
     <p class="group-note">Please select an amount you want</p>
