@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pyae Sone &amp; Kaung Mon — Marvelo</title>
+<link rel="icon" href="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#4A4FDE; --indigo-dark:#3A3EB8; --indigo-ink:#2E319E;
+  --ink:#1B1B2F; --gray:#71717E; --line:#E4E4EF; --line2:#D5D5E4;
+  --tint:#EEEEFB; --bg:#F6F6FA; --card:#FFFFFF;
+  --gold:#FFB703; --gold-deep:#E8930C; --gold-soft:#FFF3D6;
+  --green:#1FA97A;
+  --edge:#2E32A8; --cardline:#E2E2EE; --cardedge:#D8D8E8; --btnline:#DCDCE6; --btnedge:#C9C9D6; --goldedge:#B96F06;
+}
+*{margin:0;padding:0;box-sizing:border-box;box-shadow:none}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',ui-rounded,'Segoe UI Rounded','Hiragino Maru Gothic ProN',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-weight:700}
+.section{padding:52px 0 4px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.section-title{font-size:22px;color:var(--ink)}
+.section-sub{color:var(--gray);font-weight:600;margin-top:5px;max-width:560px;font-size:14.5px;line-height:1.5}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--indigo);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.4px;padding:6px 12px;border-radius:999px;text-transform:uppercase}
+.badge.gold{background:var(--gold);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid transparent;cursor:pointer;font-family:inherit;font-weight:600;border-radius:18px;padding:14px 28px;font-size:15.5px;min-height:48px;transition:background .15s,border-color .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);border-bottom:5px solid var(--edge)}
+.btn-primary:hover{background:var(--indigo-dark);border-color:var(--indigo-dark);border-bottom-color:var(--edge)}
+.btn-outline{background:#fff;border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge);color:var(--ink)}
+.btn-outline:hover{border-color:var(--indigo);border-bottom-color:var(--edge);color:var(--indigo-ink)}
+.btn-white{background:#fff;color:var(--ink);border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge)}
+.btn-gold{background:var(--gold);color:var(--ink);border:2px solid var(--gold-deep);border-bottom:5px solid var(--goldedge)}
+.btn-gold:hover{background:var(--gold-deep)}
+.btn-mini{min-height:38px;padding:8px 18px;font-size:14px;border-radius:14px;border-bottom-width:4px}
+.btn-head{min-height:44px;padding:11px 22px;font-size:15px;border-radius:16px;border-bottom-width:4px}
+.card{background:var(--card);border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px}
+.coin{width:24px;height:24px;flex:none;border-radius:50%;background:var(--gold);border:2px solid var(--gold-deep);display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink);font-weight:700}
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+.header-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;color:var(--ink)}
+.logo img{width:36px;height:36px}
+.logo .word{height:18px;width:auto}
+nav{display:flex;gap:4px;margin-left:auto}
+nav a{font-weight:600;font-size:14.5px;color:var(--gray);padding:9px 14px;border-radius:999px}
+nav a:hover{background:var(--tint);color:var(--indigo-ink)}
+nav a.active{background:var(--tint);color:var(--indigo-ink)}
+.header-in .btn{margin-left:6px}
+/* ---------- Hero ---------- */
+.hero{padding:22px 0 4px}
+.hero-card{border-radius:24px;background:var(--indigo);border:2px solid var(--indigo-dark);border-bottom:5px solid var(--indigo-ink);color:#fff;overflow:hidden;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:10px;align-items:center;padding:clamp(28px,5vw,56px)}
+.hero-card::before,.hero-card::after{content:"✦";position:absolute;color:rgba(255,255,255,.35);font-size:22px}
+.hero-card::before{top:26px;right:38%}
+.hero-card::after{bottom:30px;left:44%;font-size:16px}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.12}
+.hero h1 .gold{color:var(--gold)}
+.hero p{margin:16px 0 26px;font-weight:600;color:#DCDCFB;max-width:440px;font-size:16.5px;line-height:1.55}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.asset-placeholder{border:2.5px dashed rgba(255,255,255,.55);border-radius:20px;background:rgba(255,255,255,.08);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:8px}
+.asset-placeholder .big{font-size:44px}
+.asset-placeholder b{font-size:17px}
+.asset-placeholder span{font-size:13px;font-weight:600;color:#DCDCFB;max-width:300px;line-height:1.5}
+/* ---------- Events ---------- */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.event-card{overflow:hidden;border-radius:20px;display:flex;flex-direction:column}
+.event-card .imgbox{position:relative;background:#E7EAFB}
+.event-card .imgbox img{width:100%;height:230px;object-fit:cover}
+.event-card .badge{position:absolute;top:14px;left:14px}
+.event-body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.event-body h3{font-size:20px}
+.event-date{font-weight:700;color:var(--indigo);letter-spacing:1.2px;font-size:14.5px}
+.event-venue{font-weight:700;color:var(--gray);letter-spacing:1.2px;font-size:13px;text-transform:uppercase}
+.event-body .btn{margin-top:auto;align-self:flex-start;min-height:44px;padding:11px 24px}
+/* ---------- Books ---------- */
+.banner{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;padding:22px;border-radius:22px;border:2px solid rgba(27,27,47,.16);border-bottom:4px solid rgba(27,27,47,.24);overflow:hidden}
+.banner.yellow{background:#FFC531;color:var(--ink)}
+.banner.blue{background:var(--indigo);border-color:var(--indigo-dark);border-bottom-color:var(--indigo-ink);color:#fff}
+.banner img.cover{width:180px;height:150px;object-fit:cover;border-radius:16px;border:2px solid rgba(27,27,47,.12)}
+.banner h3{font-size:24px;margin:8px 0 4px}
+.banner .series{font-weight:600;opacity:.85;font-size:14px}
+.banner .btn{margin-top:14px}
+/* ---------- Characters ---------- */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.char-card{border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge)}
+.char-art{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:2px;padding:18px 10px 0;min-height:215px}
+.char-art img{height:195px;width:auto;max-width:48%;object-fit:contain}
+.char-art .badge{position:absolute;top:12px;left:12px}
+.char-body{padding:18px 20px 20px;text-align:center;display:flex;flex-direction:column;gap:6px;flex:1;align-items:center}
+.char-body h3{font-size:18px}
+.char-theme{font-weight:600;color:var(--gray);font-size:13.5px}
+.char-body .btn{margin-top:auto}
+/* ---------- Shop teaser ---------- */
+.shop-teaser{border-radius:22px;padding:26px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.shop-teaser .coin{width:46px;height:46px;font-size:20px}
+.shop-teaser h3{font-size:20px}
+.shop-teaser p{color:var(--gray);font-weight:600;font-size:14.5px;margin-top:4px;line-height:1.5;max-width:560px}
+.shop-teaser .btn{margin-left:auto}
+/* ---------- Footer ---------- */
+footer{margin-top:64px;background:var(--ink);color:#fff}
+.footer-in{max-width:1180px;margin:0 auto;padding:42px 20px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+footer .logo{color:#fff}
+footer p{font-weight:600;color:#B9B9CC}
+footer .fb{display:inline-flex;align-items:center;gap:8px;background:transparent;border:2px solid rgba(255,255,255,.4);border-bottom:4px solid rgba(255,255,255,.25);color:#fff;padding:10px 22px;border-radius:14px;font-weight:600;font-size:14.5px;min-height:44px}
+footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
+/* ---------- Responsive ---------- */
+@media(max-width:1020px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  nav{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .banner{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .section{padding-top:40px}
+  .shop-teaser .btn{margin-left:0}
+}
+@media(max-width:480px){
+  .grid-4{grid-template-columns:1fr}
+}
+/* ---------- Download ---------- */
+.dl-card{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:36px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.dl-icon{width:92px;height:92px;border-radius:24px;background:var(--tint);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.dl-card h3{font-size:21px}
+.dl-store{color:var(--gray);font-weight:600;font-size:14.5px}
+.dl-card .btn{margin-top:16px}
+.dl-intro{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:28px;margin-bottom:20px}
+.dl-intro-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dl-app-name{font-size:26px}
+.dl-tagline{color:var(--indigo);font-weight:700;font-size:16px;margin-top:6px}
+.dl-desc{color:var(--gray);font-weight:600;font-size:15px;line-height:1.6;margin-top:10px;max-width:760px}
+.dl-block-head{margin:38px 0 16px}
+.dl-feature{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:22px 24px}
+.dl-feature p{font-weight:600;font-size:15px;line-height:1.6;color:var(--gray)}
+.dl-feature b{color:var(--ink);font-size:16px}
+.dl-info{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:8px 24px}
+.dl-row{display:flex;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.dl-row:last-child{border-bottom:none}
+.dl-label{font-weight:700;font-size:14.5px;min-width:150px;flex:none;color:var(--ink)}
+.dl-value{font-weight:600;font-size:14.5px;color:var(--gray);line-height:1.5}
+@media(max-width:560px){
+  .dl-row{flex-direction:column;gap:2px}
+  .dl-label{min-width:0}
+  .dl-intro{padding:22px}
+}
+
+/* ---------- Character pages ---------- */
+.pg-hero{border-radius:22px;overflow:hidden;background:#fff;border:2px solid var(--cardline);border-bottom:5px solid var(--cardedge)}
+.pg-hero .char-art{min-height:300px;padding:28px 10px 0}
+.pg-hero .char-art img{height:280px}
+.pg-about{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:26px 28px}
+.pg-about p{font-weight:600;font-size:15.5px;line-height:1.65;color:var(--gray)}
+.series-row{margin-bottom:16px}
+.books-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.book-cover{border-radius:16px;overflow:hidden;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge)}
+.book-cover img{width:100%;height:auto}
+.coming-soon{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:52px 28px;text-align:center}
+.coming-soon h3{font-size:24px}
+@media(max-width:1020px){.books-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.books-grid{grid-template-columns:repeat(2,1fr)}.pg-hero .char-art{min-height:240px}.pg-hero .char-art img{height:215px}}
+/* ---------- Book reader ---------- */
+.reader-col{max-width:720px;margin:0 auto}
+.book-open{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.book-open img{width:100%;border-radius:18px;border:2px solid var(--cardline)}
+.book-dedication{font-style:italic;text-align:center;color:var(--gray);font-weight:600;font-size:15.5px;line-height:1.7;max-width:620px;margin:0 auto}
+.book-title{text-align:center;margin:30px 0 34px}
+.book-title h2{font-size:clamp(30px,5vw,40px);letter-spacing:1px}
+.book-title .bt-sub{color:var(--indigo);font-weight:700;letter-spacing:2.5px;font-size:17px;margin-top:8px}
+.book-title .bt-series{color:var(--gray);font-weight:700;letter-spacing:2.5px;font-size:13px;margin-top:5px}
+.story-page{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:24px;margin-bottom:22px}
+.story-page img{width:100%;border-radius:16px;margin-top:16px}
+.story-page p{font-weight:600;font-size:16.5px;line-height:1.65;margin-top:12px}
+.story-page p:first-of-type{margin-top:16px}
+.book-end{text-align:center;padding:10px 0 4px}
+.book-end h3{font-size:27px}
+.book-end p{color:var(--gray);font-weight:600;margin-top:6px;font-size:15.5px}
+@media(max-width:560px){.book-open{grid-template-columns:1fr}.story-page{padding:20px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo"><img class="word" src="https://marvelobook.com/_assets/v11/1443905108a3cea7bccb7c202c96f4ee3598a305.svg" alt="marvelo"></a>
+    <nav>
+      <a href="index.html#events">Events</a>
+      <a href="index.html#books">Books</a>
+      <a href="index.html#characters">Characters</a>
+      <a href="shop.html">Shop</a>
+    </nav>
+    <a class="btn btn-primary btn-head" href="download.html">Download</a>
+  </div>
+</header>
+
+<!-- CHARACTER: PYAE SONE & KAUNG MON -->
+<section class="wrap section">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title" style="font-size:30px">Pyae Sone &amp; Kaung Mon</h2>
+      <p class="section-sub">Manner Learning</p>
+    </div>
+  </div>
+  <div class="pg-hero">
+    <div class="char-art" style="background:#FBE7F1">
+      <img src="https://marvelobook.com/_assets/v11/fd0a9727dc78d2922b6c065221f25e7d21c2e863.png?w=1024" alt="Kaung Mon">
+      <img src="https://marvelobook.com/_assets/v11/573f8981b1c5c6ca619eb03a3a112c67fbd2cff7.png?w=1024" alt="Pyae Sone">
+    </div>
+  </div>
+  <div class="dl-block-head">
+    <h3 class="section-title">About the characters</h3>
+  </div>
+  <article class="card pg-about">
+    <p>Pyae Sone, apolite boy, who loves to read. He loves to teach good manners and cultural etiquette to Kaung Mon. A Burmese cat, who loves to wear Shan traditional outfit. He is mischievous, naughty and playful cat. But he loves Pyae Sone and he loves to stay beside Pyae Sone.</p>
+  </article>
+  <div class="dl-block-head">
+    <h3 class="section-title">Available Books</h3>
+  </div>
+  <div class="books-grid">
+    <article class="book-cover"><img src="https://marvelobook.com/_assets/v11/fbfb6fd7ce56ac1a5ca6c1abfd3954228f74c717.png?w=1024" alt="Pyae Sone &amp; Kaung Mon book cover 1"></article>
+    <article class="book-cover"><img src="https://marvelobook.com/_assets/v11/899bbcca6b09eb5501c4c8970cc834096c52ad14.png?w=1024" alt="Pyae Sone &amp; Kaung Mon book cover 2"></article>
+    <article class="book-cover"><img src="https://marvelobook.com/_assets/v11/1948bef2576b3e209d5d59d1a0da887b9180e43f.png?w=1024" alt="Pyae Sone &amp; Kaung Mon book cover 3"></article>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo" style="filter:brightness(0) invert(1)"> Marvelo</a>
+    <p>A Magical World of Reading for Every Child</p>
+    <a class="fb" target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=61585618202413">f &nbsp;Marvelo on Facebook</a>
+    <div class="copy">© Marvelo</div>
+  </div>
+</footer>
+
+</body>
+</html>

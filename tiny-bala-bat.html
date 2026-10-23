@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiny Bala Bat — Marvelo</title>
+<link rel="icon" href="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#4A4FDE; --indigo-dark:#3A3EB8; --indigo-ink:#2E319E;
+  --ink:#1B1B2F; --gray:#71717E; --line:#E4E4EF; --line2:#D5D5E4;
+  --tint:#EEEEFB; --bg:#F6F6FA; --card:#FFFFFF;
+  --gold:#FFB703; --gold-deep:#E8930C; --gold-soft:#FFF3D6;
+  --green:#1FA97A;
+  --edge:#2E32A8; --cardline:#E2E2EE; --cardedge:#D8D8E8; --btnline:#DCDCE6; --btnedge:#C9C9D6; --goldedge:#B96F06;
+}
+*{margin:0;padding:0;box-sizing:border-box;box-shadow:none}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',ui-rounded,'Segoe UI Rounded','Hiragino Maru Gothic ProN',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-weight:700}
+.section{padding:52px 0 4px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.section-title{font-size:22px;color:var(--ink)}
+.section-sub{color:var(--gray);font-weight:600;margin-top:5px;max-width:560px;font-size:14.5px;line-height:1.5}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--indigo);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.4px;padding:6px 12px;border-radius:999px;text-transform:uppercase}
+.badge.gold{background:var(--gold);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid transparent;cursor:pointer;font-family:inherit;font-weight:600;border-radius:18px;padding:14px 28px;font-size:15.5px;min-height:48px;transition:background .15s,border-color .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);border-bottom:5px solid var(--edge)}
+.btn-primary:hover{background:var(--indigo-dark);border-color:var(--indigo-dark);border-bottom-color:var(--edge)}
+.btn-outline{background:#fff;border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge);color:var(--ink)}
+.btn-outline:hover{border-color:var(--indigo);border-bottom-color:var(--edge);color:var(--indigo-ink)}
+.btn-white{background:#fff;color:var(--ink);border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge)}
+.btn-gold{background:var(--gold);color:var(--ink);border:2px solid var(--gold-deep);border-bottom:5px solid var(--goldedge)}
+.btn-gold:hover{background:var(--gold-deep)}
+.btn-mini{min-height:38px;padding:8px 18px;font-size:14px;border-radius:14px;border-bottom-width:4px}
+.btn-head{min-height:44px;padding:11px 22px;font-size:15px;border-radius:16px;border-bottom-width:4px}
+.card{background:var(--card);border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px}
+.coin{width:24px;height:24px;flex:none;border-radius:50%;background:var(--gold);border:2px solid var(--gold-deep);display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink);font-weight:700}
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+.header-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;color:var(--ink)}
+.logo img{width:36px;height:36px}
+.logo .word{height:18px;width:auto}
+nav{display:flex;gap:4px;margin-left:auto}
+nav a{font-weight:600;font-size:14.5px;color:var(--gray);padding:9px 14px;border-radius:999px}
+nav a:hover{background:var(--tint);color:var(--indigo-ink)}
+nav a.active{background:var(--tint);color:var(--indigo-ink)}
+.header-in .btn{margin-left:6px}
+/* ---------- Hero ---------- */
+.hero{padding:22px 0 4px}
+.hero-card{border-radius:24px;background:var(--indigo);border:2px solid var(--indigo-dark);border-bottom:5px solid var(--indigo-ink);color:#fff;overflow:hidden;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:10px;align-items:center;padding:clamp(28px,5vw,56px)}
+.hero-card::before,.hero-card::after{content:"✦";position:absolute;color:rgba(255,255,255,.35);font-size:22px}
+.hero-card::before{top:26px;right:38%}
+.hero-card::after{bottom:30px;left:44%;font-size:16px}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.12}
+.hero h1 .gold{color:var(--gold)}
+.hero p{margin:16px 0 26px;font-weight:600;color:#DCDCFB;max-width:440px;font-size:16.5px;line-height:1.55}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.asset-placeholder{border:2.5px dashed rgba(255,255,255,.55);border-radius:20px;background:rgba(255,255,255,.08);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:8px}
+.asset-placeholder .big{font-size:44px}
+.asset-placeholder b{font-size:17px}
+.asset-placeholder span{font-size:13px;font-weight:600;color:#DCDCFB;max-width:300px;line-height:1.5}
+/* ---------- Events ---------- */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.event-card{overflow:hidden;border-radius:20px;display:flex;flex-direction:column}
+.event-card .imgbox{position:relative;background:#E7EAFB}
+.event-card .imgbox img{width:100%;height:230px;object-fit:cover}
+.event-card .badge{position:absolute;top:14px;left:14px}
+.event-body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.event-body h3{font-size:20px}
+.event-date{font-weight:700;color:var(--indigo);letter-spacing:1.2px;font-size:14.5px}
+.event-venue{font-weight:700;color:var(--gray);letter-spacing:1.2px;font-size:13px;text-transform:uppercase}
+.event-body .btn{margin-top:auto;align-self:flex-start;min-height:44px;padding:11px 24px}
+/* ---------- Books ---------- */
+.banner{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;padding:22px;border-radius:22px;border:2px solid rgba(27,27,47,.16);border-bottom:4px solid rgba(27,27,47,.24);overflow:hidden}
+.banner.yellow{background:#FFC531;color:var(--ink)}
+.banner.blue{background:var(--indigo);border-color:var(--indigo-dark);border-bottom-color:var(--indigo-ink);color:#fff}
+.banner img.cover{width:180px;height:150px;object-fit:cover;border-radius:16px;border:2px solid rgba(27,27,47,.12)}
+.banner h3{font-size:24px;margin:8px 0 4px}
+.banner .series{font-weight:600;opacity:.85;font-size:14px}
+.banner .btn{margin-top:14px}
+/* ---------- Characters ---------- */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.char-card{border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge)}
+.char-art{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:2px;padding:18px 10px 0;min-height:215px}
+.char-art img{height:195px;width:auto;max-width:48%;object-fit:contain}
+.char-art .badge{position:absolute;top:12px;left:12px}
+.char-body{padding:18px 20px 20px;text-align:center;display:flex;flex-direction:column;gap:6px;flex:1;align-items:center}
+.char-body h3{font-size:18px}
+.char-theme{font-weight:600;color:var(--gray);font-size:13.5px}
+.char-body .btn{margin-top:auto}
+/* ---------- Shop teaser ---------- */
+.shop-teaser{border-radius:22px;padding:26px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.shop-teaser .coin{width:46px;height:46px;font-size:20px}
+.shop-teaser h3{font-size:20px}
+.shop-teaser p{color:var(--gray);font-weight:600;font-size:14.5px;margin-top:4px;line-height:1.5;max-width:560px}
+.shop-teaser .btn{margin-left:auto}
+/* ---------- Footer ---------- */
+footer{margin-top:64px;background:var(--ink);color:#fff}
+.footer-in{max-width:1180px;margin:0 auto;padding:42px 20px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+footer .logo{color:#fff}
+footer p{font-weight:600;color:#B9B9CC}
+footer .fb{display:inline-flex;align-items:center;gap:8px;background:transparent;border:2px solid rgba(255,255,255,.4);border-bottom:4px solid rgba(255,255,255,.25);color:#fff;padding:10px 22px;border-radius:14px;font-weight:600;font-size:14.5px;min-height:44px}
+footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
+/* ---------- Responsive ---------- */
+@media(max-width:1020px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  nav{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .banner{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .section{padding-top:40px}
+  .shop-teaser .btn{margin-left:0}
+}
+@media(max-width:480px){
+  .grid-4{grid-template-columns:1fr}
+}
+/* ---------- Download ---------- */
+.dl-card{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:36px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.dl-icon{width:92px;height:92px;border-radius:24px;background:var(--tint);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.dl-card h3{font-size:21px}
+.dl-store{color:var(--gray);font-weight:600;font-size:14.5px}
+.dl-card .btn{margin-top:16px}
+.dl-intro{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:28px;margin-bottom:20px}
+.dl-intro-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dl-app-name{font-size:26px}
+.dl-tagline{color:var(--indigo);font-weight:700;font-size:16px;margin-top:6px}
+.dl-desc{color:var(--gray);font-weight:600;font-size:15px;line-height:1.6;margin-top:10px;max-width:760px}
+.dl-block-head{margin:38px 0 16px}
+.dl-feature{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:22px 24px}
+.dl-feature p{font-weight:600;font-size:15px;line-height:1.6;color:var(--gray)}
+.dl-feature b{color:var(--ink);font-size:16px}
+.dl-info{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:8px 24px}
+.dl-row{display:flex;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.dl-row:last-child{border-bottom:none}
+.dl-label{font-weight:700;font-size:14.5px;min-width:150px;flex:none;color:var(--ink)}
+.dl-value{font-weight:600;font-size:14.5px;color:var(--gray);line-height:1.5}
+@media(max-width:560px){
+  .dl-row{flex-direction:column;gap:2px}
+  .dl-label{min-width:0}
+  .dl-intro{padding:22px}
+}
+
+/* ---------- Character pages ---------- */
+.pg-hero{border-radius:22px;overflow:hidden;background:#fff;border:2px solid var(--cardline);border-bottom:5px solid var(--cardedge)}
+.pg-hero .char-art{min-height:300px;padding:28px 10px 0}
+.pg-hero .char-art img{height:280px}
+.pg-about{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:26px 28px}
+.pg-about p{font-weight:600;font-size:15.5px;line-height:1.65;color:var(--gray)}
+.series-row{margin-bottom:16px}
+.books-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.book-cover{border-radius:16px;overflow:hidden;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge)}
+.book-cover img{width:100%;height:auto}
+.coming-soon{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:52px 28px;text-align:center}
+.coming-soon h3{font-size:24px}
+@media(max-width:1020px){.books-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.books-grid{grid-template-columns:repeat(2,1fr)}.pg-hero .char-art{min-height:240px}.pg-hero .char-art img{height:215px}}
+/* ---------- Book reader ---------- */
+.reader-col{max-width:720px;margin:0 auto}
+.book-open{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.book-open img{width:100%;border-radius:18px;border:2px solid var(--cardline)}
+.book-dedication{font-style:italic;text-align:center;color:var(--gray);font-weight:600;font-size:15.5px;line-height:1.7;max-width:620px;margin:0 auto}
+.book-title{text-align:center;margin:30px 0 34px}
+.book-title h2{font-size:clamp(30px,5vw,40px);letter-spacing:1px}
+.book-title .bt-sub{color:var(--indigo);font-weight:700;letter-spacing:2.5px;font-size:17px;margin-top:8px}
+.book-title .bt-series{color:var(--gray);font-weight:700;letter-spacing:2.5px;font-size:13px;margin-top:5px}
+.story-page{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:24px;margin-bottom:22px}
+.story-page img{width:100%;border-radius:16px;margin-top:16px}
+.story-page p{font-weight:600;font-size:16.5px;line-height:1.65;margin-top:12px}
+.story-page p:first-of-type{margin-top:16px}
+.book-end{text-align:center;padding:10px 0 4px}
+.book-end h3{font-size:27px}
+.book-end p{color:var(--gray);font-weight:600;margin-top:6px;font-size:15.5px}
+@media(max-width:560px){.book-open{grid-template-columns:1fr}.story-page{padding:20px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo"><img class="word" src="https://marvelobook.com/_assets/v11/1443905108a3cea7bccb7c202c96f4ee3598a305.svg" alt="marvelo"></a>
+    <nav>
+      <a href="index.html#events">Events</a>
+      <a href="index.html#books">Books</a>
+      <a href="index.html#characters">Characters</a>
+      <a href="shop.html">Shop</a>
+    </nav>
+    <a class="btn btn-primary btn-head" href="download.html">Download</a>
+  </div>
+</header>
+
+<!-- BOOK READER: TINY BALA BAT -->
+<section class="wrap section">
+  <div class="reader-col">
+    <div class="book-open">
+      <img src="https://marvelobook.com/_assets/v11/0fd216a8a4d2cfa0c02d8f7e151c9090aede6644.png?w=1024" alt="Tiny Bala Bat opening illustration 1">
+      <img src="https://marvelobook.com/_assets/v11/7e084034db404aac5f68988842452ca53eaf8ade.png?w=1024" alt="Tiny Bala Bat opening illustration 2">
+    </div>
+    <p class="book-dedication">For all the animals who inspire us to explore, learn, and care for our world. Every animal has a story worth telling. Dedicated to all the amazing animals who share our beautiful world with us.</p>
+    <div class="book-title">
+      <h2>TINY BALA BAT</h2>
+      <div class="bt-sub">JIT JIT &amp; MEL LONE</div>
+      <div class="bt-series">TRAVEL ADVENTURES</div>
+    </div>
+    <article class="card story-page">
+      <span class="badge">Page 1</span>
+      <img src="https://marvelobook.com/_assets/v11/6f751b60b3148dceaf6853e5e6e02d02a088c740.png?w=1024" alt="Tiny Bala Bat story illustration, page 1">
+      <p>"Mel Lone, we're going to meet another animal with a special nose, just like you!"</p>
+      <p>Mel Lone touched his snub nose.</p>
+      <p>"Really? Who?"</p>
+      <p>"The Bala Tube-nosed Bat in Thailand! They have tube-shaped noses, and they're in danger"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 2</span>
+      <img src="https://marvelobook.com/_assets/v11/df2f31ac0d98b1d524e59ed71e397a700fc61947.png?w=1024" alt="Tiny Bala Bat story illustration, page 2">
+      <p>The next morning, Jit Jit and Mel Lone arrived in the beautiful Bala Forest of Thailand.</p>
+      <p>"It's so green and misty!" whispered Mel Lone.</p>
+      <p>"Let's find the bat!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 3</span>
+      <img src="https://marvelobook.com/_assets/v11/749677900f2a645218a7ab7098272bfbddd4378d.png?w=1024" alt="Tiny Bala Bat story illustration, page 3">
+      <p>"Bats come out at night," said Jit Jit.</p>
+      <p>"We need to wait until evening."</p>
+      <p>As the sky turned pink and orange, the forest came alive with sounds. Crickets chirped and frogs croaked.</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 4</span>
+      <img src="https://marvelobook.com/_assets/v11/50c25b3f1c867bf6080a9fbc3e39259da1561521.png?w=1024" alt="Tiny Bala Bat story illustration, page 4">
+      <p>As darkness fell, a tiny bat landed on a branch right in front of them!</p>
+      <p>"Hello! I'm Betty the Bala Bat!" she said with a sweet voice.</p>
+      <p>"You can talk!" gasped Jit Jit.</p>
+      <p>"And you're so tiny!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 5</span>
+      <img src="https://marvelobook.com/_assets/v11/32a8579b286382a47d3af281b0abeccd1ba4be3e.png?w=1024" alt="Tiny Bala Bat story illustration, page 5">
+      <p>"I'm very small—I weigh less than a cookie and can fit in your hand!" said Betty proudly.</p>
+      <p>Mel Lone's eyes went wide.</p>
+      <p>"You're even smaller than me!"</p>
+      <p>"Much smaller!" giggled Betty.</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 6</span>
+      <img src="https://marvelobook.com/_assets/v11/e8a6aa0055113589db129f393772523b18923688.png?w=1024" alt="Tiny Bala Bat story illustration, page 6">
+      <p>"Mel Lone, you have a snub nose, and I have tube-shaped nostrils!" said Betty.</p>
+      <p>"Look—they stick out like tiny straws! My tubes give me a supercharged sense of smell! I can sniff out food with amazing accuracy!"</p>
+      <p>Mel Lone touched his nose.</p>
+      <p>"We both have special noses!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 7</span>
+      <img src="https://marvelobook.com/_assets/v11/38d5b1e59bb28a65c5bfeceed65c78e24e354447.png?w=1024" alt="Tiny Bala Bat story illustration, page 7">
+      <p>"My fur looks gray," said Betty, "but look closely!"</p>
+      <p>She spun around, and her fur sparkled!</p>
+      <p>"I have silver-gold guard hairs that shimmer in the moonlight!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 8</span>
+      <img src="https://marvelobook.com/_assets/v11/f4366c68988f2052528b01b02e31cef934c2c6de.png?w=1024" alt="Tiny Bala Bat story illustration, page 8">
+      <p>"I eat insects, but I can be very fussy! Some bats like me who live with humans are picky eaters!"</p>
+      <p>"What do you mean?" asked Jit Jit.</p>
+      <p>"One day I might love bananas, but the next day I might want something different" Betty giggled.</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 9</span>
+      <img src="https://marvelobook.com/_assets/v11/febadf4568246f0ad1fc5bb006f5472614b9a3b7.png?w=1024" alt="Tiny Bala Bat story illustration, page 9">
+      <p>Betty suddenly flew toward some bugs.</p>
+      <p>"Watch this! I'm a great insect hunter!" She caught a mosquito and came back.</p>
+      <p>"I eat lots of bugs—yummy!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 10</span>
+      <img src="https://marvelobook.com/_assets/v11/209c7483162d1304940037abd645cd327f1e99d8.png?w=1024" alt="Tiny Bala Bat story illustration, page 10">
+      <p>"How do you catch bugs in the dark?" wondered Jit Jit.</p>
+      <p>"I use echolocation! I make special sounds that bounce back and tell me where things are!" said Betty proudly.</p>
+      <p>"Like a superpower!" said Mel Lone.</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 11</span>
+      <img src="https://marvelobook.com/_assets/v11/214e6e08c2e388fa93ddf60860655c200fd6557d.png?w=1024" alt="Tiny Bala Bat story illustration, page 11">
+      <p>"Watch this trick!" said Betty. She hung from a leaf and wrapped her wings around herself. Then she rocked back and forth gently!</p>
+      <p>"When I move like this in the wind, I look just like a leaf! Predators can't find me!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 12</span>
+      <img src="https://marvelobook.com/_assets/v11/e2c97aef855e2e82232882b95aec8cbbc9559f66.png?w=1024" alt="Tiny Bala Bat story illustration, page 12">
+      <p>Betty stretched out her wings.</p>
+      <p>"See the yellow spots on my wings? They help me hide in the dappled forest light!"</p>
+      <p>"Like polka dots!" said Mel Lone.</p>
+      <p>"So pretty!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 13</span>
+      <img src="https://marvelobook.com/_assets/v11/9fac5ad6a095f30aaa5556b519420b352a02ba75.png?w=1024" alt="Tiny Bala Bat story illustration, page 13">
+      <p>"Come meet my family!" said Betty happily. More tiny bats appeared, flying all around! They swooped and danced in the moonlight.</p>
+      <p>"This is my home and my family," smiled Betty.</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 14</span>
+      <img src="https://marvelobook.com/_assets/v11/5f18921ecd0fabf0693712b0e55f0241746099c9.png?w=1024" alt="Tiny Bala Bat story illustration, page 14">
+      <p>Betty's voice became quiet.</p>
+      <p>"My whole family lives in this one small forest—less than 4 square kilometres." "That's so tiny!" said Jit Jit.</p>
+      <p>"Yes. If even a small part of this forest is destroyed, my entire species could disappear forever," said Betty sadly.</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 15</span>
+      <img src="https://marvelobook.com/_assets/v11/7102ef195852eb9bfb3d19c51ce80457d5b601ed.png?w=1024" alt="Tiny Bala Bat story illustration, page 15">
+      <p>"When people cut down trees, we lose our homes and have nowhere else to go," Betty explained.</p>
+      <p>"We only live here in Bala Forest, nowhere else in the whole world!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 16</span>
+      <img src="https://marvelobook.com/_assets/v11/1845418ca935d3b5f338ee3ca469ec19981bc904.png?w=1024" alt="Tiny Bala Bat story illustration, page 16">
+      <p>"Will you help us?" asked Betty hopefully.</p>
+      <p>"Tell people about Bala Bats so they'll protect our forest?"</p>
+      <p>"Yes!" said Jit Jit.</p>
+      <p>"I promise to tell everyone how special you are!" Mel Lone nodded.</p>
+      <p>"We'll help protect your home!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 17</span>
+      <img src="https://marvelobook.com/_assets/v11/f5e57bf4b23b5fab26b425bff38f3c4a4ebaf4ed.png?w=1024" alt="Tiny Bala Bat story illustration, page 17">
+      <p>As they left the forest, Betty flew beside them one more time.</p>
+      <p>"Thank you for caring about us!" she called.</p>
+      <p>"We will never forget you, Betty!" Jit Jit called back.</p>
+      <p>"We'll help protect you and your family!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 18</span>
+      <img src="https://marvelobook.com/_assets/v11/703f253ccd66f635350ba7dc5a1ebb73dd043fe3.png?w=1024" alt="Tiny Bala Bat story illustration, page 18">
+      <p>Back home, Jit Jit pulled out her special diary.</p>
+      <p>"I have so much to write about Betty and her family! It was the best adventure ever!"</p>
+      <p>Jit Jit smiled and opened to a fresh page.</p>
+      <p>"Betty asked us to help, and we will!"</p>
+    </article>
+    <article class="card story-page">
+      <span class="badge">Page 19</span>
+      <img src="https://marvelobook.com/_assets/v11/aaf79923faefea41a73390ea776fc6c84a7e928f.png?w=1024" alt="Tiny Bala Bat story illustration, page 19">
+      <p>Today I met the most amazing animal - a Bala Tube-nosed Bat</p>
+      <p>- Betty and Mel Lone both have unique noses</p>
+      <p>- yellow wing spots help her blend in with dappled forest light.</p>
+      <p>Betty's family lives in a tiny area. When people cut down trees, they lose their only home. Even though their home is small, we can make a BIG difference by protecting it!</p>
+    </article>
+    <div class="book-end">
+      <h3>The End</h3>
+      <p>Thank you for reading!</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo" style="filter:brightness(0) invert(1)"> Marvelo</a>
+    <p>A Magical World of Reading for Every Child</p>
+    <a class="fb" target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=61585618202413">f &nbsp;Marvelo on Facebook</a>
+    <div class="copy">© Marvelo</div>
+  </div>
+</footer>
+
+</body>
+</html>
