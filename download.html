@@ -134,6 +134,25 @@ footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
 .dl-back{margin-top:28px;text-align:center}
 .dl-back a{color:var(--indigo);font-weight:700;font-size:15px}
 .dl-back a:hover{color:var(--indigo-ink)}
+.dl-intro{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:28px;margin-bottom:20px}
+.dl-intro-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dl-app-name{font-size:26px}
+.dl-tagline{color:var(--indigo);font-weight:700;font-size:16px;margin-top:6px}
+.dl-desc{color:var(--gray);font-weight:600;font-size:15px;line-height:1.6;margin-top:10px;max-width:760px}
+.dl-block-head{margin:38px 0 16px}
+.dl-feature{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:22px 24px}
+.dl-feature p{font-weight:600;font-size:15px;line-height:1.6;color:var(--gray)}
+.dl-feature b{color:var(--ink);font-size:16px}
+.dl-info{border-radius:22px;border-bottom:5px solid var(--cardedge);padding:8px 24px}
+.dl-row{display:flex;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.dl-row:last-child{border-bottom:none}
+.dl-label{font-weight:700;font-size:14.5px;min-width:150px;flex:none;color:var(--ink)}
+.dl-value{font-weight:600;font-size:14.5px;color:var(--gray);line-height:1.5}
+@media(max-width:560px){
+  .dl-row{flex-direction:column;gap:2px}
+  .dl-label{min-width:0}
+  .dl-intro{padding:22px}
+}
 </style>
 </head>
 <body>
@@ -159,6 +178,14 @@ footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
       <p class="section-sub">Get the Marvelo app for your child's reading adventures.</p>
     </div>
   </div>
+  <article class="card dl-intro">
+    <div class="dl-intro-top">
+      <h3 class="dl-app-name">Marvelo Book</h3>
+      <span class="badge gold">Free</span>
+    </div>
+    <p class="dl-tagline">Read stories &amp; earn rewards</p>
+    <p class="dl-desc">Marvelo Book is a fun and interactive reading app designed for children and families. Explore a growing collection of beautifully illustrated picture books, enjoy read-aloud narration, color your favorite characters, and make reading an exciting daily habit.</p>
+  </article>
   <div class="grid-2">
     <article class="card dl-card">
       <div class="dl-icon"><svg viewBox="0 0 24 24" width="54" height="54" fill="#1FA97A" aria-hidden="true"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 1.23 12.95 1 12 1c-.96 0-1.86.23-2.66.63L7.85.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 3.26 6 5.01 6 7h12c0-1.99-.97-3.75-2.47-4.84zM10 5H9V4h1v1zm5 0h-1V4h1v1z"/></svg></div>
@@ -173,6 +200,47 @@ footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
       <a class="btn btn-primary" href="https://apps.apple.com/th/app/marvelo-book/id6760916159?l=th" target="_blank" rel="noopener">Download for Apple</a>
     </article>
   </div>
+
+  <div class="dl-block-head">
+    <h3 class="section-title">What's Inside</h3>
+  </div>
+  <div class="grid-2">
+    <article class="card dl-feature">
+      <p><b>Read &amp; Listen</b> — narrated stories with Read-to-Me mode and highlighted text that follows along</p>
+    </article>
+    <article class="card dl-feature">
+      <p><b>Discover Stories</b> — browse picture books by category, series, or characters; search by title or author</p>
+    </article>
+    <article class="card dl-feature">
+      <p><b>Color &amp; Create</b> — color your favorite story characters and save your artwork</p>
+    </article>
+    <article class="card dl-feature">
+      <p><b>Earn &amp; Achieve</b> — earn Marvelo Points, complete daily reading goals, and collect achievement badges</p>
+    </article>
+    <article class="card dl-feature">
+      <p><b>Family Friendly</b> — child profiles with avatars and reading-progress tracking</p>
+    </article>
+    <article class="card dl-feature">
+      <p><b>Safe for Kids</b> — parent-managed profiles in a safe, easy-to-use environment</p>
+    </article>
+  </div>
+
+  <div class="dl-block-head">
+    <h3 class="section-title">App Information</h3>
+  </div>
+  <div class="card dl-info">
+    <div class="dl-row"><span class="dl-label">Provider</span><span class="dl-value">YAMMOBOTS COMPANY LIMITED</span></div>
+    <div class="dl-row"><span class="dl-label">Price</span><span class="dl-value">Free</span></div>
+    <div class="dl-row"><span class="dl-label">Category</span><span class="dl-value">Education</span></div>
+    <div class="dl-row"><span class="dl-label">Age Rating</span><span class="dl-value">4+</span></div>
+    <div class="dl-row"><span class="dl-label">Size</span><span class="dl-value">45.4 MB (iOS)</span></div>
+    <div class="dl-row"><span class="dl-label">Version</span><span class="dl-value">2.0.6</span></div>
+    <div class="dl-row"><span class="dl-label">Compatibility</span><span class="dl-value">iOS 15.0 or later (iPhone &amp; iPad)</span></div>
+    <div class="dl-row"><span class="dl-label">Languages</span><span class="dl-value">English, Myanmar (Burmese), Thai</span></div>
+    <div class="dl-row"><span class="dl-label">Privacy</span><span class="dl-value">The developer does not collect any data from this app</span></div>
+    <div class="dl-row"><span class="dl-label">Copyright</span><span class="dl-value">© 2021 Yammobots Co., Ltd</span></div>
+  </div>
+
   <p class="dl-back"><a href="index.html">&larr; Back to Home</a></p>
 </section>
 
