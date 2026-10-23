@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvelo Shop — Subscriptions &amp; Points</title>
+<link rel="icon" href="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#4A4FDE; --indigo-dark:#3A3EB8; --indigo-ink:#2E319E;
+  --ink:#1B1B2F; --gray:#71717E; --line:#E4E4EF; --line2:#D5D5E4;
+  --tint:#EEEEFB; --card:#FFFFFF;
+  --gold:#FFB703; --gold-deep:#E8930C; --gold-soft:#FFF3D6;
+  --orange:#FF8A1E; --emerald:#12B76A;
+  --edge:#2E32A8; --cardline:#E2E2EE; --cardedge:#D8D8E8; --btnline:#DCDCE6; --btnedge:#C9C9D6; --goldedge:#B96F06;
+}
+*{margin:0;padding:0;box-sizing:border-box;box-shadow:none}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',ui-rounded,'Segoe UI Rounded','Hiragino Maru Gothic ProN',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit}
+h1,h2,h3{font-weight:700}
+.coin{width:24px;height:24px;flex:none;border-radius:50%;background:var(--gold);border:2px solid var(--gold-deep);display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink);font-weight:700}
+.coin.lg{width:36px;height:36px;font-size:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid transparent;cursor:pointer;font-weight:600;border-radius:18px;padding:14px 28px;font-size:15.5px;min-height:48px;transition:background .15s,border-color .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);border-bottom:5px solid var(--edge)}
+.btn-primary:hover{background:var(--indigo-dark);border-color:var(--indigo-dark);border-bottom-color:var(--edge)}
+.btn-primary:disabled{background:#F4F4F8;border-color:#E3E3EE;border-bottom:5px solid #D8D8E6;color:#B9B9C9;opacity:1;cursor:not-allowed}
+.btn-primary:disabled:hover{background:#F4F4F8;border-color:#E3E3EE;border-bottom-color:#D8D8E6}
+.btn-outline{background:#fff;border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge);color:var(--ink)}
+.btn-outline:hover{border-color:var(--indigo);border-bottom-color:var(--edge);color:var(--indigo-ink)}
+.btn-mini{min-height:38px;padding:8px 18px;font-size:14px;border-radius:14px;border-bottom-width:4px}
+.btn-head{min-height:44px;padding:11px 22px;font-size:15px;border-radius:16px;border-bottom-width:4px}
+.btn-dock{flex:1;min-height:54px;font-size:16px}
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line)}
+.header-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;color:var(--ink)}
+.logo img{width:36px;height:36px}
+.logo .word{height:18px;width:auto}
+nav{display:flex;gap:4px;margin-left:auto}
+nav a{font-weight:600;font-size:14.5px;color:var(--gray);padding:9px 14px;border-radius:999px}
+nav a:hover{background:var(--tint);color:var(--indigo-ink)}
+nav a.active{background:var(--tint);color:var(--indigo-ink)}
+.header-in .btn{margin-left:6px}
+.draft-note{max-width:760px;margin:16px auto 0;padding:0 20px}
+.draft-note div{background:var(--gold-soft);border:2px dashed var(--gold);color:#8A5A00;font-weight:600;font-size:13.5px;border-radius:14px;padding:10px 16px;text-align:center}
+/* ---------- Flow column ---------- */
+.flow-col{max-width:760px;margin:0 auto;padding:26px 20px 0}
+.page-title{font-size:20px;font-weight:700}
+.page-note{color:var(--gray);font-weight:600;font-size:13.5px;margin-top:6px;display:flex;align-items:center;gap:8px;line-height:1.5}
+/* Hub entries */
+.hub{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.entry-card{background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:20px;padding:18px 20px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px}
+.entry-card b{font-size:17px}
+.entry-card span{color:var(--gray);font-weight:600;font-size:13.5px;line-height:1.45}
+.entry-card.sel{border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);padding:18px 20px}
+/* Steps */
+.step{display:none;padding-bottom:8px}
+.step.on{display:block}
+.step-head-center{text-align:center;margin:30px 0 20px}
+.step-head-center h2{font-size:21px}
+.step-head-center p{color:var(--gray);font-weight:600;font-size:14px;margin-top:6px}
+.step-head-row{display:flex;align-items:center;justify-content:space-between;margin:26px 0 6px}
+.icon-btn{width:44px;height:44px;flex:none;border-radius:14px;background:#fff;border:2px solid var(--btnline);border-bottom:4px solid var(--btnedge);color:var(--ink);font-size:19px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.icon-btn:hover{border-color:var(--indigo);border-bottom-color:var(--edge);color:var(--indigo-ink)}
+.step-title{font-size:20px;margin-top:16px}
+.step-sub{color:var(--gray);font-weight:600;font-size:14px;margin-top:5px}
+.group-head{font-size:16.5px;font-weight:700;margin:24px 0 6px}
+.group-note{color:var(--gray);font-weight:600;font-size:13px;margin-bottom:12px}
+/* Profile selector */
+.profile-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.profile-card{background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px;padding:16px 18px;cursor:pointer;text-align:left}
+.profile-card .cap{font-size:14.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.profile-card .sub{color:var(--gray);font-weight:600;font-size:13.5px;margin-top:3px}
+.profile-card.sel{border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);padding:16px 18px}
+/* Segmented toggle */
+.seg{display:flex;background:#fff;border:2px solid var(--btnline);border-radius:999px;padding:6px;height:56px;margin-top:18px}
+.seg button{flex:1;border:none;background:transparent;cursor:pointer;font-weight:600;font-size:15px;color:var(--ink);border-radius:999px}
+.seg button.on{background:var(--indigo);color:#fff}
+/* Plan cards */
+.plan-list{display:flex;flex-direction:column;gap:14px}
+.plan-card{background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:22px;padding:18px 20px;cursor:pointer;text-align:left;width:100%}
+.plan-card.sel{border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);padding:18px 20px}
+.plan-card h3{font-size:18px}
+.plan-feats{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:4px}
+.plan-feats li{font-size:13px;font-weight:600;color:var(--gray)}
+.plan-feats li::before{content:"· ";font-weight:700;color:var(--indigo)}
+.plan-divider{border:none;border-top:1px solid var(--line);margin:14px 0 12px}
+.plan-card.sel .plan-divider{border-top-color:#C9C9EC}
+.plan-foot{display:flex;align-items:baseline;gap:5px}
+.plan-amt{font-size:19px;font-weight:700;color:var(--indigo)}
+.plan-per{font-size:13.5px;font-weight:600;color:var(--gray)}
+/* Dock */
+.dock{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 0 16px;margin-top:26px;display:flex;gap:12px;z-index:40}
+/* Payment */
+.use-points{width:100%;background:#fff;border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);border-radius:16px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;text-align:left;margin-top:18px}
+.use-points .up-name{font-size:16px;font-weight:700}
+.use-points .up-right{margin-left:auto;text-align:right}
+.use-points .up-right .lbl{font-size:11.5px;font-weight:700;letter-spacing:1px;color:var(--gray);text-transform:uppercase}
+.use-points .up-right .val{font-size:17px;font-weight:700}
+.use-points.plain{border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);background:#fff;padding:16px 18px}
+.or-row{display:flex;align-items:center;gap:14px;margin:20px 0 4px}
+.or-row::before,.or-row::after{content:"";flex:1;border-top:1px solid var(--line)}
+.or-row span{font-size:12.5px;font-weight:700;letter-spacing:1.4px;color:var(--gray)}
+.method-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.method-row{width:100%;min-height:64px;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px;padding:12px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;text-align:left}
+.method-row.sel{border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);padding:12px 18px}
+.brand-chip{flex:none;border:1px solid var(--line2);border-radius:8px;background:#fff;padding:5px 9px;font-size:11.5px;font-weight:700;letter-spacing:.4px;color:var(--ink)}
+.method-name{font-size:15px;font-weight:600}
+.method-amt{margin-left:auto;font-size:15px;font-weight:700}
+/* Points */
+.points-hero{margin-top:26px}
+.orange-panel{background:var(--orange);border-radius:0 0 24px 24px;padding:26px 20px 46px;text-align:center}
+.orange-panel .op-title{font-size:18px;font-weight:700;color:var(--ink)}
+.balance-card{position:relative;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:22px;padding:16px 18px;margin:-30px 14px 0;display:flex;align-items:center;gap:12px;text-align:left}
+.balance-card .b-lbl{font-size:12.5px;font-weight:600;color:var(--gray)}
+.balance-card .b-val{font-size:21px;font-weight:700;line-height:1.2}
+.balance-actions{display:flex;gap:12px;margin:12px 14px 0}.balance-actions .btn{flex:1;min-height:50px}.balance-actions .btn-primary{flex:1.35}
+.pack-list{display:flex;flex-direction:column;gap:12px}
+.pack-row{width:100%;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px;padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;text-align:left}
+.pack-row.sel{border:2px solid var(--indigo);border-bottom:5px solid var(--edge);background:var(--tint);padding:14px 18px}
+.pack-size{font-size:16px;font-weight:600}
+.pack-right{margin-left:auto;text-align:right}
+.pack-right .mmk-lbl{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--gray)}
+.pack-right .mmk-amt{font-size:16px;font-weight:600;color:var(--indigo)}
+/* Modal */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:center;justify-content:center;padding:20px}
+.scrim.open{display:flex}
+.modal{background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:26px;padding:22px;width:100%;max-width:420px;position:relative}
+.modal h3{font-size:20px;text-align:center;margin-bottom:18px}
+.modal-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:12px;background:#fff;border:2px solid var(--btnline);border-bottom:4px solid var(--btnedge);font-size:15px;cursor:pointer;color:var(--ink)}
+.info-box{border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px;padding:13px 16px;margin-bottom:12px}
+.info-box .ib-lbl{font-size:12px;font-weight:600;color:var(--gray);margin-bottom:4px}
+.info-box .ib-val{font-size:16px;font-weight:700;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.plan-badge{background:var(--emerald);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:999px;text-transform:uppercase}
+.modal-btns{display:flex;gap:12px;margin-top:18px}
+.modal-btns .btn{flex:1;min-height:52px}
+/* Bottom sheet */
+.sheet-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:flex-end;justify-content:center}
+.sheet-scrim.open{display:flex}
+.sheet{background:#fff;border-radius:26px 26px 0 0;padding:14px 22px 26px;width:100%;max-width:560px;position:relative}
+.grab{width:36px;height:4px;border-radius:999px;background:#C9C9D6;margin:2px auto 16px}
+.sheet h3{font-size:19px;text-align:center}
+.sheet .sheet-x{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:12px;background:#fff;border:2px solid var(--btnline);border-bottom:4px solid var(--btnedge);font-size:15px;cursor:pointer;color:var(--ink)}
+.sheet-amt{color:var(--indigo);font-weight:600;font-size:16.5px;text-align:center;line-height:1.55;margin:14px 0 20px}
+.sheet .btn{width:100%;min-height:54px}
+/* Success */
+.success-wrap{text-align:center;padding:56px 10px 10px}
+.success-wrap h2{font-size:24px}
+.success-wrap .s-gray{color:var(--gray);font-weight:600;font-size:14.5px;margin-top:10px}
+.success-wrap .s-indigo{color:var(--indigo);font-weight:700;font-size:17px;margin-top:14px;line-height:1.55}
+.success-wrap .btn{width:100%;min-height:54px;margin-top:30px}
+/* Footer */
+footer{margin-top:64px;background:var(--ink);color:#fff}
+.footer-in{max-width:1180px;margin:0 auto;padding:42px 20px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+footer .logo{color:#fff;display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px}
+footer .logo img{width:36px;height:36px}
+footer p{font-weight:600;color:#B9B9CC}
+footer .fb{display:inline-flex;align-items:center;gap:8px;background:transparent;border:2px solid rgba(255,255,255,.4);border-bottom:4px solid rgba(255,255,255,.25);color:#fff;padding:10px 22px;border-radius:14px;font-weight:600;font-size:14.5px;min-height:44px}
+footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
+@media(max-width:760px){
+  nav{display:none}
+  .hub{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo"><img class="word" src="https://marvelobook.com/_assets/v11/1443905108a3cea7bccb7c202c96f4ee3598a305.svg" alt="marvelo"></a>
+    <nav>
+      <a href="index.html#events">Events</a>
+      <a href="index.html#books">Books</a>
+      <a href="index.html#characters">Characters</a>
+      <a href="shop.html" class="active">Shop</a>
+    </nav>
+    <a class="btn btn-outline btn-head" href="index.html">Home</a>
+  </div>
+</header>
+
+<div class="draft-note"><div>Draft for review — front-end only, checkout does not process real payments.</div></div>
+
+<main class="flow-col">
+  <h1 class="page-title">Shop</h1>
+  <p class="page-note"><span class="coin">★</span><span>Digital books unlock for 100 points inside the Marvelo app.</span></p>
+
+  <!-- HUB ENTRIES -->
+  <div class="hub">
+    <button type="button" class="entry-card sel" id="entrySubs">
+      <b>Subscriptions</b>
+      <span>Remove all limits with a monthly or yearly plan.</span>
+    </button>
+    <button type="button" class="entry-card" id="entryPoints">
+      <b>Buy Points</b>
+      <span>Top up your point balance to unlock books and rewards.</span>
+    </button>
+  </div>
+
+  <!-- STEP: SUBSCRIPTIONS -->
+  <section class="step on" id="step-subs">
+    <div class="step-head-center">
+      <h2>Remove all limits</h2>
+      <p>Choose a plan for your child's profile.</p>
+    </div>
+
+    <div class="profile-row">
+      <button type="button" class="profile-card sel" data-profile="individual">
+        <div class="cap">Individual</div>
+        <div class="sub">Single Child Profile</div>
+      </button>
+      <button type="button" class="profile-card" data-profile="family">
+        <div class="cap">Family</div>
+        <div class="sub">Family Plan</div>
+      </button>
+    </div>
+
+    <div class="seg" id="periodSeg">
+      <button type="button" data-period="monthly" class="on">Monthly</button>
+      <button type="button" data-period="yearly">Yearly</button>
+    </div>
+
+    <div class="group-head">Select Plan</div>
+    <p class="group-note">Prices in Points · 1 Point = 1 MMK</p>
+    <div class="plan-list" id="planList"></div>
+
+    <div class="dock">
+      <button type="button" class="btn btn-primary btn-dock" id="subsContinue" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- STEP: PAYMENT -->
+  <section class="step" id="step-payment">
+    <div class="step-head-row">
+      <button type="button" class="icon-btn" id="payBackIcon" aria-label="Back">←</button>
+      <button type="button" class="btn btn-outline btn-mini">Help</button>
+    </div>
+    <h2 class="step-title">Payment</h2>
+    <p class="step-sub">Pay with your points or a card.</p>
+
+    <button type="button" class="use-points" id="usePoints">
+      <span class="coin lg">★</span>
+      <span class="up-name">Use your points</span>
+      <span class="up-right">
+        <span class="lbl">Total</span><br>
+        <span class="val" id="upTotal">0 Points</span>
+      </span>
+    </button>
+
+    <div class="or-row"><span>OR</span></div>
+
+    <div class="method-list" id="methodList">
+      <button type="button" class="method-row" data-method="visa">
+        <span class="brand-chip">VISA</span>
+        <span class="method-name">Visa</span>
+        <span class="method-amt" data-amt>—</span>
+      </button>
+      <button type="button" class="method-row" data-method="mastercard">
+        <span class="brand-chip">MasterCard</span>
+        <span class="method-name">MasterCard</span>
+        <span class="method-amt" data-amt>—</span>
+      </button>
+      <button type="button" class="method-row" data-method="jcb">
+        <span class="brand-chip">JCB</span>
+        <span class="method-name">JCB</span>
+        <span class="method-amt" data-amt>—</span>
+      </button>
+    </div>
+
+    <div class="dock">
+      <button type="button" class="btn btn-outline btn-dock" id="payBack">Back</button>
+      <button type="button" class="btn btn-primary btn-dock" id="payCheckout">Checkout</button>
+    </div>
+  </section>
+
+  <!-- STEP: POINTS -->
+  <section class="step" id="step-points">
+    <div class="points-hero">
+      <div class="orange-panel">
+        <div class="op-title">Your Point Balance</div>
+      </div>
+      <div class="balance-card">
+        <span class="coin lg">★</span>
+        <div>
+          <div class="b-lbl">Your Point Balance</div>
+          <div class="b-val">12,000</div>
+        </div>
+      </div>
+      <div class="balance-actions">
+        <button type="button" class="btn btn-primary"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg> Redeem Gift</button>
+        <button type="button" class="btn btn-outline"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline><polyline points="12 7 12 12 15 14"></polyline></svg> Point History</button>
+      </div>
+    </div>
+
+    <div class="group-head">Purchase Points</div>
+    <p class="group-note">Please select an amount you want</p>
+    <div class="pack-list" id="packList"></div>
+
+    <div class="dock">
+      <button type="button" class="btn btn-primary btn-dock" id="pointsContinue" disabled>Continue</button>
+    </div>
+  </section>
+
+  <!-- STEP: SUCCESS -->
+  <section class="step" id="step-success">
+    <div class="success-wrap">
+      <h2>Payment Success !</h2>
+      <p class="s-gray" id="successGray">Thank you for your purchase.</p>
+      <p class="s-indigo" id="successLine"></p>
+      <button type="button" class="btn btn-primary" id="successGo">Let's Go</button>
+    </div>
+  </section>
+</main>
+
+<!-- CONFIRM SUBSCRIPTION MODAL -->
+<div class="scrim" id="confirmModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Confirm Subscription">
+    <button type="button" class="modal-x" id="modalX" aria-label="Close">✕</button>
+    <h3>Confirm Subscription</h3>
+    <div class="info-box">
+      <div class="ib-lbl">Plan</div>
+      <div class="ib-val"><span id="modalPlanName">—</span><span class="plan-badge" id="modalPlanBadge">—</span></div>
+    </div>
+    <div class="info-box">
+      <div class="ib-lbl">Billing Cycle</div>
+      <div class="ib-val" id="modalCycle">—</div>
+    </div>
+    <div class="info-box">
+      <div class="ib-lbl">Profile</div>
+      <div class="ib-val" id="modalProfile">—</div>
+    </div>
+    <div class="info-box">
+      <div class="ib-lbl">Total</div>
+      <div class="ib-val" id="modalTotal">—</div>
+    </div>
+    <div class="modal-btns">
+      <button type="button" class="btn btn-outline" id="modalCancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="modalConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM PAYMENT BOTTOM SHEET -->
+<div class="sheet-scrim" id="confirmSheet">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Confirm Payment">
+    <div class="grab"></div>
+    <button type="button" class="sheet-x" id="sheetX" aria-label="Close">✕</button>
+    <h3>Confirm Payment</h3>
+    <p class="sheet-amt" id="sheetText"></p>
+    <button type="button" class="btn btn-primary" id="sheetProceed">Proceed and Pay</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo" style="filter:brightness(0) invert(1)"> Marvelo</a>
+    <p>A Magical World of Reading for Every Child</p>
+    <a class="fb" target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=61585618202413">f &nbsp;Marvelo on Facebook</a>
+    <div class="copy">© Marvelo</div>
+  </div>
+</footer>
+
+<script>
+const PLANS = [
+  { id:'starter',  name:'Starter',   monthly:'3,500', yearly:'35,000',
+    features:['Unlimited Marvelo Origins','Safe, ad-free, parent-approved','Cancel anytime'] },
+  { id:'explorer', name:'Explorer',  monthly:'4,500', yearly:'45,000',
+    features:['Unlimited Marvelo Origins','External Publishing Books','Safe, ad-free, parent-approved','Cancel anytime'] },
+  { id:'learner',  name:'Learner',   monthly:'3,500', yearly:'35,000',
+    features:['Unlimited Marvelo Origins','Academic Books','Safe, ad-free, parent-approved','Cancel anytime'] },
+  { id:'supermax', name:'Super Max', monthly:'6,500', yearly:'65,000',
+    features:['Unlimited for any kind of books'] },
+];
+const PACKS = [
+  { id:'pack3500', points:'3,500' },
+  { id:'pack6500', points:'6,500' },
+  { id:'pack8500', points:'8,500' },
+];
+const state = { period:'monthly', profile:'individual', plan:null, pack:null, pay:'points', flow:'subs' };
+
+const $ = id => document.getElementById(id);
+const steps = ['step-subs','step-payment','step-points','step-success'];
+function showStep(id){
+  steps.forEach(s => $(s).classList.toggle('on', s===id));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function setFlow(flow){
+  state.flow = flow;
+  $('entrySubs').classList.toggle('sel', flow==='subs');
+  $('entryPoints').classList.toggle('sel', flow==='points');
+  showStep(flow==='subs' ? 'step-subs' : 'step-points');
+}
+function currentPlan(){ return PLANS.find(p=>p.id===state.plan) || null; }
+function currentPack(){ return PACKS.find(p=>p.id===state.pack) || null; }
+
+function renderPlans(){
+  $('planList').innerHTML = PLANS.map(p => `
+    <button type="button" class="plan-card ${state.plan===p.id?'sel':''}" data-plan="${p.id}">
+      <h3>${p.name}</h3>
+      <ul class="plan-feats">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <hr class="plan-divider">
+      <div class="plan-foot"><span class="plan-amt">${p[state.period]} Points</span><span class="plan-per"> per ${state.period==='monthly'?'month':'yearly'}</span></div>
+    </button>`).join('');
+  $('planList').querySelectorAll('[data-plan]').forEach(el=>{
+    el.addEventListener('click', ()=>{ state.plan = el.dataset.plan; renderPlans(); renderPayment(); });
+  });
+  $('subsContinue').disabled = !state.plan;
+}
+function renderPacks(){
+  $('packList').innerHTML = PACKS.map(p => `
+    <button type="button" class="pack-row ${state.pack===p.id?'sel':''}" data-pack="${p.id}">
+      <span class="coin lg">★</span>
+      <span class="pack-size">${p.points} Points</span>
+      <span class="pack-right">
+        <span class="mmk-lbl">MMK</span><br>
+        <span class="mmk-amt">${p.points}</span>
+      </span>
+    </button>`).join('');
+  $('packList').querySelectorAll('[data-pack]').forEach(el=>{
+    el.addEventListener('click', ()=>{ state.pack = el.dataset.pack; renderPacks(); });
+  });
+  $('pointsContinue').disabled = !state.pack;
+}
+function renderPayment(){
+  const p = currentPlan(); if(!p) return;
+  const amt = p[state.period];
+  $('upTotal').textContent = amt + ' Points';
+  document.querySelectorAll('[data-amt]').forEach(el => el.textContent = amt + ' MMK');
+  $('usePoints').classList.toggle('plain', state.pay!=='points');
+  $('usePoints').style.borderColor = state.pay==='points' ? 'var(--indigo)' : 'var(--cardline)';
+  $('usePoints').style.borderBottom = state.pay==='points' ? '5px solid var(--edge)' : '4px solid var(--cardedge)';
+  $('usePoints').style.background = state.pay==='points' ? 'var(--tint)' : '#fff';
+  document.querySelectorAll('.method-row').forEach(r => r.classList.toggle('sel', r.dataset.method===state.pay));
+}
+function openModal(){
+  const p = currentPlan(); if(!p) return;
+  $('modalPlanName').textContent = p.name;
+  $('modalPlanBadge').textContent = p.name;
+  $('modalCycle').textContent = state.period==='monthly' ? 'Monthly' : 'Yearly';
+  $('modalProfile').textContent = state.profile==='individual' ? 'Individual (Single Child Profile)' : 'Family';
+  $('modalTotal').textContent = p[state.period] + ' Points (MMK ' + p[state.period] + ')';
+  $('confirmModal').classList.add('open');
+}
+function closeModal(){ $('confirmModal').classList.remove('open'); }
+
+$('entrySubs').addEventListener('click', ()=> setFlow('subs'));
+$('entryPoints').addEventListener('click', ()=> setFlow('points'));
+document.querySelectorAll('.profile-card').forEach(c=>{
+  c.addEventListener('click', ()=>{
+    state.profile = c.dataset.profile;
+    document.querySelectorAll('.profile-card').forEach(x=>x.classList.toggle('sel', x===c));
+  });
+});
+$('periodSeg').addEventListener('click', e=>{
+  const b = e.target.closest('[data-period]'); if(!b) return;
+  state.period = b.dataset.period;
+  document.querySelectorAll('#periodSeg button').forEach(x=>x.classList.toggle('on', x===b));
+  renderPlans(); renderPayment();
+});
+$('subsContinue').addEventListener('click', ()=>{ if(!state.plan) return; renderPayment(); showStep('step-payment'); });
+$('payBack').addEventListener('click', ()=> showStep('step-subs'));
+$('payBackIcon').addEventListener('click', ()=> showStep('step-subs'));
+$('usePoints').addEventListener('click', ()=>{ state.pay='points'; renderPayment(); });
+$('methodList').addEventListener('click', e=>{
+  const r = e.target.closest('[data-method]'); if(!r) return;
+  state.pay = r.dataset.method; renderPayment();
+});
+$('payCheckout').addEventListener('click', openModal);
+$('modalX').addEventListener('click', closeModal);
+$('modalCancel').addEventListener('click', closeModal);
+$('confirmModal').addEventListener('click', e=>{ if(e.target===$('confirmModal')) closeModal(); });
+$('modalConfirm').addEventListener('click', ()=>{
+  const p = currentPlan(); if(!p) return;
+  closeModal();
+  const payName = {points:'Points Balance', visa:'Visa', mastercard:'MasterCard', jcb:'JCB'}[state.pay];
+  $('successGray').textContent = 'Your subscription is ready — paid with ' + payName + '.';
+  $('successLine').textContent = 'You are now subscribed to the ' + p.name + ' Plan (' + (state.period==='monthly'?'Monthly':'Yearly') + ') — ' + p[state.period] + ' Points.';
+  showStep('step-success');
+});
+$('pointsContinue').addEventListener('click', ()=>{
+  const pk = currentPack(); if(!pk) return;
+  $('sheetText').textContent = 'You are about to buy ' + pk.points + ' Points with ' + pk.points + ' MMK.';
+  $('confirmSheet').classList.add('open');
+});
+$('sheetX').addEventListener('click', ()=> $('confirmSheet').classList.remove('open'));
+$('confirmSheet').addEventListener('click', e=>{ if(e.target===$('confirmSheet')) $('confirmSheet').classList.remove('open'); });
+$('sheetProceed').addEventListener('click', ()=>{
+  const pk = currentPack(); if(!pk) return;
+  $('confirmSheet').classList.remove('open');
+  $('successGray').textContent = 'Thank you for your purchase.';
+  $('successLine').textContent = pk.points + ' Points added to your point balance.';
+  showStep('step-success');
+});
+$('successGo').addEventListener('click', ()=>{
+  if(state.flow==='points'){ state.pack = null; renderPacks(); showStep('step-points'); }
+  else { state.plan = null; state.pay = 'points'; renderPlans(); showStep('step-subs'); }
+});
+renderPlans();
+renderPacks();
+</script>
+</body>
+</html>

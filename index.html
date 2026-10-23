@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvelo — A Magical World of Reading for Every Child</title>
+<link rel="icon" href="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#4A4FDE; --indigo-dark:#3A3EB8; --indigo-ink:#2E319E;
+  --ink:#1B1B2F; --gray:#71717E; --line:#E4E4EF; --line2:#D5D5E4;
+  --tint:#EEEEFB; --bg:#F6F6FA; --card:#FFFFFF;
+  --gold:#FFB703; --gold-deep:#E8930C; --gold-soft:#FFF3D6;
+  --green:#1FA97A;
+  --edge:#2E32A8; --cardline:#E2E2EE; --cardedge:#D8D8E8; --btnline:#DCDCE6; --btnedge:#C9C9D6; --goldedge:#B96F06;
+}
+*{margin:0;padding:0;box-sizing:border-box;box-shadow:none}
+html{scroll-behavior:smooth}
+body{font-family:'Quicksand',ui-rounded,'Segoe UI Rounded','Hiragino Maru Gothic ProN',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-weight:700}
+.section{padding:52px 0 4px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.section-title{font-size:22px;color:var(--ink)}
+.section-sub{color:var(--gray);font-weight:600;margin-top:5px;max-width:560px;font-size:14.5px;line-height:1.5}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--indigo);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.4px;padding:6px 12px;border-radius:999px;text-transform:uppercase}
+.badge.gold{background:var(--gold);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid transparent;cursor:pointer;font-family:inherit;font-weight:600;border-radius:18px;padding:14px 28px;font-size:15.5px;min-height:48px;transition:background .15s,border-color .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);border-bottom:5px solid var(--edge)}
+.btn-primary:hover{background:var(--indigo-dark);border-color:var(--indigo-dark);border-bottom-color:var(--edge)}
+.btn-outline{background:#fff;border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge);color:var(--ink)}
+.btn-outline:hover{border-color:var(--indigo);border-bottom-color:var(--edge);color:var(--indigo-ink)}
+.btn-white{background:#fff;color:var(--ink);border:2px solid var(--btnline);border-bottom:5px solid var(--btnedge)}
+.btn-gold{background:var(--gold);color:var(--ink);border:2px solid var(--gold-deep);border-bottom:5px solid var(--goldedge)}
+.btn-gold:hover{background:var(--gold-deep)}
+.btn-mini{min-height:38px;padding:8px 18px;font-size:14px;border-radius:14px;border-bottom-width:4px}
+.btn-head{min-height:44px;padding:11px 22px;font-size:15px;border-radius:16px;border-bottom-width:4px}
+.card{background:var(--card);border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge);border-radius:16px}
+.coin{width:24px;height:24px;flex:none;border-radius:50%;background:var(--gold);border:2px solid var(--gold-deep);display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink);font-weight:700}
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+.header-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;color:var(--ink)}
+.logo img{width:36px;height:36px}
+.logo .word{height:18px;width:auto}
+nav{display:flex;gap:4px;margin-left:auto}
+nav a{font-weight:600;font-size:14.5px;color:var(--gray);padding:9px 14px;border-radius:999px}
+nav a:hover{background:var(--tint);color:var(--indigo-ink)}
+nav a.active{background:var(--tint);color:var(--indigo-ink)}
+.header-in .btn{margin-left:6px}
+.draft-note{max-width:1180px;margin:16px auto 0;padding:0 20px}
+.draft-note div{background:var(--gold-soft);border:2px dashed var(--gold);color:#8A5A00;font-weight:600;font-size:13.5px;border-radius:14px;padding:10px 16px;text-align:center}
+/* ---------- Hero ---------- */
+.hero{padding:22px 0 4px}
+.hero-card{border-radius:24px;background:var(--indigo);border:2px solid var(--indigo-dark);border-bottom:5px solid var(--indigo-ink);color:#fff;overflow:hidden;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:10px;align-items:center;padding:clamp(28px,5vw,56px)}
+.hero-card::before,.hero-card::after{content:"✦";position:absolute;color:rgba(255,255,255,.35);font-size:22px}
+.hero-card::before{top:26px;right:38%}
+.hero-card::after{bottom:30px;left:44%;font-size:16px}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.12}
+.hero h1 .gold{color:var(--gold)}
+.hero p{margin:16px 0 26px;font-weight:600;color:#DCDCFB;max-width:440px;font-size:16.5px;line-height:1.55}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.asset-placeholder{border:2.5px dashed rgba(255,255,255,.55);border-radius:20px;background:rgba(255,255,255,.08);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:8px}
+.asset-placeholder .big{font-size:44px}
+.asset-placeholder b{font-size:17px}
+.asset-placeholder span{font-size:13px;font-weight:600;color:#DCDCFB;max-width:300px;line-height:1.5}
+/* ---------- Events ---------- */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.event-card{overflow:hidden;border-radius:20px;display:flex;flex-direction:column}
+.event-card .imgbox{position:relative;background:#E7EAFB}
+.event-card .imgbox img{width:100%;height:230px;object-fit:cover}
+.event-card .badge{position:absolute;top:14px;left:14px}
+.event-body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.event-body h3{font-size:20px}
+.event-date{font-weight:700;color:var(--indigo);letter-spacing:1.2px;font-size:14.5px}
+.event-venue{font-weight:700;color:var(--gray);letter-spacing:1.2px;font-size:13px;text-transform:uppercase}
+.event-body .btn{margin-top:auto;align-self:flex-start;min-height:44px;padding:11px 24px}
+/* ---------- Books ---------- */
+.banner{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;padding:22px;border-radius:22px;border:2px solid rgba(27,27,47,.16);border-bottom:4px solid rgba(27,27,47,.24);overflow:hidden}
+.banner.yellow{background:#FFC531;color:var(--ink)}
+.banner.blue{background:var(--indigo);border-color:var(--indigo-dark);border-bottom-color:var(--indigo-ink);color:#fff}
+.banner img.cover{width:180px;height:150px;object-fit:cover;border-radius:16px;border:2px solid rgba(27,27,47,.12)}
+.banner h3{font-size:24px;margin:8px 0 4px}
+.banner .series{font-weight:600;opacity:.85;font-size:14px}
+.banner .btn{margin-top:14px}
+/* ---------- Characters ---------- */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.char-card{border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:#fff;border:2px solid var(--cardline);border-bottom:4px solid var(--cardedge)}
+.char-art{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:2px;padding:18px 10px 0;min-height:215px}
+.char-art img{height:195px;width:auto;max-width:48%;object-fit:contain}
+.char-art .badge{position:absolute;top:12px;left:12px}
+.char-body{padding:18px 20px 20px;text-align:center;display:flex;flex-direction:column;gap:6px;flex:1;align-items:center}
+.char-body h3{font-size:18px}
+.char-theme{font-weight:600;color:var(--gray);font-size:13.5px}
+.char-body .btn{margin-top:auto}
+/* ---------- Shop teaser ---------- */
+.shop-teaser{border-radius:22px;padding:26px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.shop-teaser .coin{width:46px;height:46px;font-size:20px}
+.shop-teaser h3{font-size:20px}
+.shop-teaser p{color:var(--gray);font-weight:600;font-size:14.5px;margin-top:4px;line-height:1.5;max-width:560px}
+.shop-teaser .btn{margin-left:auto}
+/* ---------- Footer ---------- */
+footer{margin-top:64px;background:var(--ink);color:#fff}
+.footer-in{max-width:1180px;margin:0 auto;padding:42px 20px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+footer .logo{color:#fff}
+footer p{font-weight:600;color:#B9B9CC}
+footer .fb{display:inline-flex;align-items:center;gap:8px;background:transparent;border:2px solid rgba(255,255,255,.4);border-bottom:4px solid rgba(255,255,255,.25);color:#fff;padding:10px 22px;border-radius:14px;font-weight:600;font-size:14.5px;min-height:44px}
+footer .copy{font-size:13px;color:#8E8EA6;margin-top:8px}
+/* ---------- Responsive ---------- */
+@media(max-width:1020px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  nav{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .banner{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .section{padding-top:40px}
+  .shop-teaser .btn{margin-left:0}
+}
+@media(max-width:480px){
+  .grid-4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo"><img class="word" src="https://marvelobook.com/_assets/v11/1443905108a3cea7bccb7c202c96f4ee3598a305.svg" alt="marvelo"></a>
+    <nav>
+      <a href="#events">Events</a>
+      <a href="#books">Books</a>
+      <a href="#characters">Characters</a>
+      <a href="shop.html">Shop</a>
+    </nav>
+    <a class="btn btn-primary btn-head" href="shop.html">Go to Shop</a>
+  </div>
+</header>
+
+<div class="draft-note"><div>Draft for review — front-end only, checkout does not process real payments.</div></div>
+
+<!-- HERO -->
+<div class="wrap hero">
+  <div class="hero-card">
+    <div class="hero-grid">
+      <div>
+        <span class="badge gold">★ Marvelo</span>
+        <h1 style="margin-top:16px">A Magical World of <span class="gold">Reading</span><br>for Every Child</h1>
+        <p>Marvelo brings story books and reading adventures to children — in the same bright, friendly style as the Marvelo app.</p>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="#books">Explore Books</a>
+          <a class="btn btn-white" href="shop.html">Go to Shop</a>
+        </div>
+      </div>
+      <div class="asset-placeholder" role="img" aria-label="Marv mascot illustration placeholder">
+        <div class="big">🦉</div>
+        <b>ASSET NEEDED — Marv Mascot Illustration</b>
+        <span>Marv: a yellow owl chick with a blue wizard hat with a yellow star and a red cape, reading a blue book. This image is not on marvelobook.com — please supply the original file.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTS -->
+<section class="wrap section" id="events">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Announcements &amp; Events</h2>
+      <p class="section-sub">Meet Marvelo in person at these book fairs.</p>
+    </div>
+  </div>
+  <div class="grid-2">
+    <article class="card event-card">
+      <div class="imgbox">
+        <img src="https://marvelobook.com/_assets/v11/028d2cd25b61be17f6ea300d192c7a91326191ce.png?w=1024" alt="Yangon Children Book Fair illustration">
+        <span class="badge">Recent Event</span>
+      </div>
+      <div class="event-body">
+        <h3>Yangon Children Book Fair</h3>
+        <div class="event-date">MAY 1 - MAY 3</div>
+        <div class="event-venue">GALLERY OHMAR</div>
+        <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Gallery+Ohmar/@16.8402301,96.1273614,17z/data=!3m1!4b1!4m6!3m5!1s0x30c1956f27867519:0x6265eea4c2fee043!8m2!3d16.840225!4d96.1299363!16s%2Fg%2F11yc64wrln?entry=ttu&amp;g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D">Get Direction</a>
+      </div>
+    </article>
+    <article class="card event-card">
+      <div class="imgbox">
+        <img src="https://marvelobook.com/_assets/v11/c99838af92614831f2729dd52648776c00d3d3f6.png?w=1024" alt="Bangkok International Book Fair 2026 illustration">
+        <span class="badge">Recent Event</span>
+      </div>
+      <div class="event-body">
+        <h3>Bangkok International Book Fair 2026</h3>
+        <div class="event-date">MARCH 26 - MARCH 30</div>
+        <div class="event-venue">QUEEN SIRIKIT NATIONAL CONVENTION CENTER</div>
+        <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Queen+Sirikit+National+Convention+Center/@13.7245406,100.5564073,17z/data=!3m1!4b1!4m6!3m5!1s0x30e29f1a5c9887b3:0x230edac05ae63ab7!8m2!3d13.7245354!4d100.5589822!16zL20vMDZ3X3Bj?entry=ttu&amp;g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D">Get Direction</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- BOOKS -->
+<section class="wrap section" id="books">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Our Books</h2>
+      <p class="section-sub">Curious what's inside? Read one of our books, or get the series in print.</p>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="banner yellow">
+      <img class="cover" src="https://marvelobook.com/_assets/v11/2256e6bf4711dfac686ae47111e973d0996f6dcf.png?w=1024" alt="Tiny Bala Bat book cover">
+      <div>
+        <span class="badge">Read a Book</span>
+        <h3>Tiny Bala Bat</h3>
+        <div class="series">Jit Jit &amp; Mel Lone Travel Adventures</div>
+        <a class="btn btn-white" target="_blank" rel="noopener" href="https://marvelobook.com/jj-n-ml-tiny-bala-bat">Read Book</a>
+      </div>
+    </div>
+    <div class="banner blue">
+      <img class="cover" src="https://marvelobook.com/_assets/v11/cdf01a55b969327055946beb55ac66e933c3ab4b.png?w=1024" alt="Marvelo physical books">
+      <div>
+        <span class="badge gold">Physical Books</span>
+        <h3>Get Series of Our Books</h3>
+        <div class="series">Contact us to order printed Marvelo books.</div>
+        <a class="btn btn-white" target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=61585618202413">Buy Books</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section class="wrap section" id="characters">
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Meet Our Characters</h2>
+      <p class="section-sub">Choose a character pair to discover their stories, adventures, and books!</p>
+    </div>
+  </div>
+  <div class="grid-4">
+    <article class="char-card">
+      <div class="char-art" style="background:#EEEEFB">
+        <span class="badge">Promotion</span>
+        <img src="https://marvelobook.com/_assets/v11/fef2c8fb29b88f3613bbd3c55583d5805e3e87ff.png?w=1024" alt="Mel Lone">
+        <img src="https://marvelobook.com/_assets/v11/86433c2d97b7dff8bbeaef4dd093aab11b2644c7.png?w=1024" alt="Jit Jit">
+      </div>
+      <div class="char-body">
+        <h3>Jit Jit &amp; Mel Lone</h3>
+        <div class="char-theme">Travel &amp; Adventure</div>
+        <a class="btn btn-outline btn-mini" target="_blank" rel="noopener" href="https://marvelobook.com/jitjit-n-mellone">Explore more</a>
+      </div>
+    </article>
+    <article class="char-card">
+      <div class="char-art" style="background:#E7EAFB">
+        <span class="badge">Promotion</span>
+        <img src="https://marvelobook.com/_assets/v11/fed4caee36fa7465d54b7f7abee9809b7203442b.png?w=1024" alt="Sue San">
+        <img src="https://marvelobook.com/_assets/v11/710eec20fc39a0a088e9581914baa84d2f59f5d0.png?w=1024" alt="Max">
+      </div>
+      <div class="char-body">
+        <h3>Sue San &amp; Max</h3>
+        <div class="char-theme">Knowledge and Inventions</div>
+        <a class="btn btn-outline btn-mini" target="_blank" rel="noopener" href="https://marvelobook.com/suesan-n-max">Explore more</a>
+      </div>
+    </article>
+    <article class="char-card">
+      <div class="char-art" style="background:#FBE7F1">
+        <span class="badge">Promotion</span>
+        <img src="https://marvelobook.com/_assets/v11/fd0a9727dc78d2922b6c065221f25e7d21c2e863.png?w=1024" alt="Kaung Mon">
+        <img src="https://marvelobook.com/_assets/v11/573f8981b1c5c6ca619eb03a3a112c67fbd2cff7.png?w=1024" alt="Pyae Sone">
+      </div>
+      <div class="char-body">
+        <h3>Pyae Sone &amp; Kaung Mon</h3>
+        <div class="char-theme">Manner Learning</div>
+        <a class="btn btn-outline btn-mini" target="_blank" rel="noopener" href="https://marvelobook.com/pyaesone-n-kgmon">Explore more</a>
+      </div>
+    </article>
+    <article class="char-card">
+      <div class="char-art" style="background:#E2F4F1">
+        <span class="badge">Promotion</span>
+        <img src="https://marvelobook.com/_assets/v11/0adc54ddde244398d79d5ddf6da4ad7f85f66e51.png?w=1024" alt="Nilar">
+        <img src="https://marvelobook.com/_assets/v11/ebaad7151cfe7b302094d5cd7072fcec13ddc55c.png?w=1024" alt="Thuta">
+      </div>
+      <div class="char-body">
+        <h3>Nilar &amp; Thuta</h3>
+        <div class="char-theme">Culture and Traditions</div>
+        <a class="btn btn-outline btn-mini" target="_blank" rel="noopener" href="https://marvelobook.com/nilar-n-thuta">Explore more</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- SHOP TEASER -->
+<section class="wrap section" id="shop">
+  <div class="card shop-teaser">
+    <span class="coin">★</span>
+    <div>
+      <h3>Shop</h3>
+      <p>Buy subscriptions and top up Points for your child's Marvelo profile. 1 Point = 1 MMK.</p>
+    </div>
+    <a class="btn btn-primary" href="shop.html">Go to Shop</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <a class="logo" href="index.html"><img src="https://marvelobook.com/_assets/v11/e612f3ea855329bdd2237ab01dec43451d019915.svg" alt="Marvelo logo" style="filter:brightness(0) invert(1)"> Marvelo</a>
+    <p>A Magical World of Reading for Every Child</p>
+    <a class="fb" target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=61585618202413">f &nbsp;Marvelo on Facebook</a>
+    <div class="copy">© Marvelo</div>
+  </div>
+</footer>
+
+</body>
+</html>
