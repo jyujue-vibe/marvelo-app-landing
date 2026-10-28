@@ -322,7 +322,7 @@
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var lenis = null;
     if (!reduced && typeof window.Lenis !== 'undefined') {
-      try { lenis = new window.Lenis({ autoRaf: true }); } catch (e) { lenis = null; }
+      try { lenis = new window.Lenis(); } catch (e) { lenis = null; }
     }
     document.querySelectorAll('a[href^="#"]').forEach(function (a) {
       a.addEventListener('click', function (ev) {
@@ -341,6 +341,7 @@
     var scenes = Array.prototype.slice.call(document.querySelectorAll('.plx-scene'));
     function small() { return window.innerWidth < 768; }
     function tick() {
+      if (lenis) { try { lenis.raf(performance.now()); } catch (e) {} }
       var vh = window.innerHeight, cy = window.scrollY + vh / 2;
       scenes.forEach(function (scene) {
         var r = scene.getBoundingClientRect();
