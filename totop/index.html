@@ -3,379 +3,721 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TO TOP — Sample (layout demo)</title>
+<title>TO TOP — Sample (layout demo v2)</title>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,600;1,9..144,900&family=Inter:wght@400;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  /* Custom code ONLY for parallax / reveal / motion. Layout is Tailwind. */
-  .plx-scene { position: relative; overflow: hidden; }
-  .plx-layer { position: absolute; left: 0; width: 100%; height: 120%; top: -10%; will-change: transform; }
+  /* Custom code ONLY for motion / reveal / preloader / circles / trail. Layout is Tailwind. */
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  .serif { font-family: 'Fraunces', Georgia, serif; }
+  .script { font-family: 'Caveat', cursive; }
+  /* ---- Preloader ---- */
+  #preloader { position: fixed; inset: 0; z-index: 100; background: #0E2A1F; display: flex; align-items: center; justify-content: center; transition: opacity .8s ease; }
+  #preloader.done { opacity: 0; pointer-events: none; }
+  /* ---- Header pill: hides on scroll down, returns on scroll up ---- */
+  #pillHeader { transition: transform .5s ease; }
+  #pillHeader.hidden-pill { transform: translateY(-160%); }
+  /* ---- Word-rise text reveal (JS splits headings into .wr words) ---- */
+  .word-rise .wr { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+  .word-rise .wr > span { display: inline-block; transform: translateY(115%); transition: transform .75s cubic-bezier(.22,1,.36,1); will-change: transform; }
+  .word-rise.visible .wr > span { transform: translateY(0); }
+  /* ---- Plain fade-up reveal for bodies/cards ---- */
   .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
   .reveal.visible { opacity: 1; transform: none; }
-  .reveal-d1 { transition-delay: .12s; }
-  .reveal-d2 { transition-delay: .24s; }
-  @keyframes drift { from { transform: translateX(-3%); } to { transform: translateX(3%); } }
-  .cloud-drift { animation: drift 14s ease-in-out infinite alternate; }
-  @keyframes flagwave { from { transform: skewY(-4deg); } to { transform: skewY(4deg); } }
-  .flag-wave { animation: flagwave 2.4s ease-in-out infinite alternate; transform-origin: left center; }
+  /* ---- Parallax ---- */
+  .plx-scene { position: relative; overflow: hidden; }
+  .plx-layer { position: absolute; left: 0; width: 100%; height: 120%; top: -10%; will-change: transform; }
+  /* ---- Tilted glowing yellow circles ---- */
+  .sun-circle { transform: rotate(-12deg); box-shadow: 0 0 60px rgba(255,196,0,.55), 0 0 140px rgba(255,196,0,.3); }
+  /* ---- Ghost numbers ---- */
+  .ghost { position: absolute; top: -0.35em; right: 0.1em; font-family: 'Fraunces', Georgia, serif; font-weight: 900; line-height: 1; color: rgba(255,255,255,.14); pointer-events: none; user-select: none; }
+  /* ---- Testimonial carousel ---- */
+  #tTrack { touch-action: pan-y; cursor: grab; }
+  #tTrack.dragging { cursor: grabbing; }
+  .t-slide { position: absolute; inset: 0; opacity: 0; transform: translateX(40px); transition: opacity .55s ease, transform .55s ease; pointer-events: none; }
+  .t-slide.active { position: relative; opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .t-dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.35); transition: all .3s ease; }
+  .t-dot.active { width: 16px; height: 16px; background: #FFC400; }
+  /* ---- Torn / jagged edges ---- */
+  .torn-bottom { position: absolute; left: 0; bottom: -1px; width: 100%; height: 46px; }
+  @keyframes drift { from { transform: translateX(-2%); } to { transform: translateX(2%); } }
+  .cloud-drift { animation: drift 16s ease-in-out infinite alternate; }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
-    .cloud-drift, .flag-wave { animation: none; }
+    .word-rise .wr > span { transform: none; transition: none; }
+    .cloud-drift { animation: none; }
+    #preloader { transition: none; }
   }
 </style>
 </head>
-<body class="bg-[#FAF6EE] text-[#1E2A32] antialiased overflow-x-hidden">
+<body class="bg-[#FAF6EE] text-[#0E2A1F] antialiased overflow-x-hidden">
 
-<!-- ============ NAV ============ -->
-<header class="sticky top-0 z-50 bg-[#FAF6EE]/90 backdrop-blur border-b border-stone-200">
-  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 px-5 py-4">
-    <a href="#" class="font-black tracking-[0.2em] text-xl">TO&nbsp;TOP</a>
-    <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
-      <a href="#about" class="hover:text-amber-600">About</a>
-      <a href="#offers" class="hover:text-amber-600">Offers</a>
-      <a href="#stories" class="hover:text-amber-600">Stories</a>
-      <a href="#team" class="hover:text-amber-600">Team</a>
-      <a href="#contact" class="hover:text-amber-600">Contact</a>
+<!-- ============ PRELOADER ============ -->
+<div id="preloader" aria-hidden="true">
+  <div class="text-center">
+    <p class="serif font-black tracking-[0.25em] text-white text-3xl sm:text-4xl">TO&nbsp;TOP</p>
+    <p class="text-[#FFC400] text-sm tracking-[0.3em] mt-3 font-semibold">FOR BETTER ORGANIZATIONS</p>
+  </div>
+</div>
+
+<!-- ============ HEADER PILL (hides on scroll down) ============ -->
+<header id="pillHeader" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1700px]">
+  <div class="bg-[#0E2A1F] text-white rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.35)] flex items-center justify-between gap-4 px-5 sm:px-8 h-[70px]">
+    <a href="#top" class="serif font-black tracking-[0.2em] text-lg sm:text-xl shrink-0">TO&nbsp;TOP</a>
+    <nav class="hidden lg:flex items-center gap-8 text-[14px] font-semibold tracking-wider">
+      <a href="#why" class="hover:text-[#FFC400]">WHY HERE</a>
+      <a href="#approach" class="hover:text-[#FFC400]">APPROACH</a>
+      <a href="#offers" class="hover:text-[#FFC400]">OFFERS</a>
+      <a href="#about" class="hover:text-[#FFC400]">ABOUT</a>
+      <a href="#taste" class="hover:text-[#FFC400]">TASTE</a>
     </nav>
-    <a href="#contact" class="bg-[#1E2A32] text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-amber-500 hover:text-[#1E2A32] transition">Book a call</a>
+    <div class="flex items-center gap-3 shrink-0">
+      <span class="hidden sm:block text-[14px] font-bold">EN</span>
+      <a href="#contact" class="bg-[#FFC400] text-[#0E2A1F] text-[13px] sm:text-sm font-extrabold px-4 sm:px-6 py-2.5 rounded-full hover:bg-[#ffd54a] transition">CONTACT US</a>
+    </div>
   </div>
 </header>
 
-<!-- ============ HERO: fullwidth parallax mountain scene ============ -->
-<section class="plx-scene min-h-[92vh] flex items-end">
-  <!-- SAMPLE SCENE: self-drawn SVG layers (JJ to replace with own artwork) -->
+<!-- ============ HERO ============ -->
+<section id="top" class="plx-scene bg-[#0E2A1F] min-h-[108vh] flex items-end">
+  <!-- Layer: pale distant mountains (slowest) -->
   <div class="plx-layer" data-speed="0.05">
-    <svg class="w-full h-full" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#FDEFC7"/><stop offset="55%" stop-color="#F6E3B4"/><stop offset="100%" stop-color="#E9D9B8"/>
-      </linearGradient></defs>
-      <rect width="1440" height="700" fill="url(#sky)"/>
-      <circle cx="1150" cy="130" r="70" fill="#F2C14E" opacity="0.85"/>
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <rect width="1440" height="900" fill="#0E2A1F"/>
+      <path d="M0,520 L180,330 L360,480 L540,280 L720,460 L900,320 L1080,480 L1260,300 L1440,450 L1440,900 L0,900 Z" fill="#3E5C4B"/>
     </svg>
   </div>
-  <div class="plx-layer cloud-drift" data-speed="0.15">
-    <svg class="w-full h-full" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <g fill="#ffffff" opacity="0.9">
-        <ellipse cx="250" cy="140" rx="120" ry="30"/><ellipse cx="320" cy="120" rx="90" ry="26"/>
-        <ellipse cx="950" cy="220" rx="140" ry="32"/><ellipse cx="1030" cy="200" rx="90" ry="26"/>
-        <ellipse cx="620" cy="90" rx="100" ry="24"/>
+  <!-- Layer: clouds -->
+  <div class="plx-layer cloud-drift" data-speed="0.12">
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <g fill="#ffffff" opacity="0.14">
+        <ellipse cx="250" cy="180" rx="130" ry="26"/><ellipse cx="950" cy="140" rx="150" ry="28"/><ellipse cx="620" cy="110" rx="110" ry="22"/>
       </g>
     </svg>
   </div>
-  <div class="plx-layer" data-speed="0.30">
-    <svg class="w-full h-full" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <path d="M0,470 L180,270 L360,430 L540,210 L720,400 L900,260 L1080,440 L1260,230 L1440,410 L1440,700 L0,700 Z" fill="#C9D6E8"/>
-      <path d="M540,210 L600,290 L480,290 Z" fill="#ffffff" opacity="0.8"/>
-      <path d="M1260,230 L1320,310 L1200,310 Z" fill="#ffffff" opacity="0.8"/>
+  <!-- Layer: mid green hills -->
+  <div class="plx-layer" data-speed="0.22">
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0,640 L220,470 L420,600 L660,430 L880,610 L1100,460 L1280,600 L1440,510 L1440,900 L0,900 Z" fill="#2A4A38"/>
     </svg>
   </div>
-  <div class="plx-layer" data-speed="0.48">
-    <svg class="w-full h-full" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <path d="M0,560 L220,380 L420,520 L660,340 L880,530 L1100,380 L1280,520 L1440,430 L1440,700 L0,700 Z" fill="#5B7A6B"/>
-      <path d="M660,340 L730,430 L590,430 Z" fill="#ffffff" opacity="0.35"/>
-      <!-- dotted climbing path -->
-      <path d="M180,640 C320,560 380,470 520,430 C660,390 700,470 860,400 C980,350 1080,300 1180,250" fill="none" stroke="#F2C14E" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 18"/>
-      <!-- small hiker -->
-      <g transform="translate(1180,250)">
-        <circle cx="0" cy="-14" r="9" fill="#1E2A32"/>
-        <line x1="0" y1="-5" x2="0" y2="16" stroke="#1E2A32" stroke-width="6" stroke-linecap="round"/>
-        <line x1="0" y1="16" x2="-10" y2="32" stroke="#1E2A32" stroke-width="5" stroke-linecap="round"/>
-        <line x1="0" y1="16" x2="11" y2="30" stroke="#1E2A32" stroke-width="5" stroke-linecap="round"/>
-        <rect x="6" y="-4" width="12" height="16" rx="3" fill="#C2410C"/>
+  <!-- Layer: foreground grass + hiker + dotted trail (fastest) -->
+  <div class="plx-layer" data-speed="0.45">
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0,760 L260,620 L520,730 L800,600 L1060,720 L1300,630 L1440,700 L1440,900 L0,900 Z" fill="#6B8F5E"/>
+      <path d="M180,860 C320,780 420,720 560,690 C700,660 760,740 900,680 C1020,640 1120,560 1220,500" fill="none" stroke="#FFC400" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 20"/>
+      <g transform="translate(1220,500)">
+        <circle cx="0" cy="-14" r="10" fill="#0E2A1F"/>
+        <line x1="0" y1="-4" x2="0" y2="18" stroke="#0E2A1F" stroke-width="7" stroke-linecap="round"/>
+        <line x1="0" y1="18" x2="-11" y2="36" stroke="#0E2A1F" stroke-width="6" stroke-linecap="round"/>
+        <line x1="0" y1="18" x2="12" y2="34" stroke="#0E2A1F" stroke-width="6" stroke-linecap="round"/>
+        <rect x="7" y="-2" width="14" height="18" rx="3" fill="#C2410C"/>
       </g>
     </svg>
   </div>
-  <div class="relative z-10 max-w-7xl mx-auto px-5 pb-24 pt-40 w-full">
-    <p class="reveal text-xs font-bold tracking-[0.3em] text-stone-600">FOR BETTER ORGANIZATIONS</p>
-    <h1 class="reveal reveal-d1 text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.95] max-w-3xl mt-4">Let's climb<br>higher, together.</h1>
-    <p class="reveal reveal-d2 text-lg text-stone-700 max-w-xl mt-6">We help teams find a clear path forward — and walk it with them, step by step, all the way to the top.</p>
-    <div class="reveal reveal-d2 flex flex-wrap gap-3 mt-8">
-      <a href="#about" class="bg-[#1E2A32] text-white font-bold px-7 py-3.5 rounded-full hover:bg-amber-500 hover:text-[#1E2A32] transition">Start the climb</a>
-      <a href="#offers" class="bg-white/80 font-bold px-7 py-3.5 rounded-full border-2 border-[#1E2A32] hover:bg-white transition">See the offers</a>
+  <!-- Hero copy -->
+  <div class="relative z-10 w-[90%] max-w-[1700px] mx-auto text-center pt-40 pb-48">
+    <h1 class="word-rise serif font-black text-white leading-[0.92]" style="font-size:clamp(72px,12vw,200px)">Transforming</h1>
+    <h1 class="word-rise serif font-black leading-[0.92] text-[#C8D4CC] -mt-[0.18em]" style="font-size:clamp(64px,11vw,180px)">organizations</h1>
+    <p class="word-rise script text-[#FFC400] -mt-[0.3em]" style="font-size:clamp(36px,4.5vw,68px)">towards people, planet, profit</p>
+    <!-- Sun circle -->
+    <div class="sun-circle mx-auto mt-14 bg-[#FFC400] rounded-full flex items-center justify-center text-center" style="width:clamp(180px,16vw,250px);height:clamp(180px,16vw,250px)">
+      <p class="font-extrabold text-[#0E2A1F] leading-tight px-6" style="font-size:clamp(14px,1.2vw,18px)">WHERE DO YOU<br>WANT TO GO?</p>
     </div>
+  </div>
+  <!-- Torn bottom edge -->
+  <svg class="torn-bottom" viewBox="0 0 1440 46" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,46 L0,28 L60,34 L120,18 L190,32 L260,14 L330,30 L410,20 L480,36 L560,16 L640,30 L720,20 L800,34 L880,18 L960,32 L1040,16 L1120,30 L1200,20 L1280,34 L1360,18 L1440,28 L1440,46 Z" fill="#0E2A1F"/>
+  </svg>
+</section>
+
+<!-- ============ KNOWN FROM STRIP ============ -->
+<section class="bg-[#0E2A1F] py-10">
+  <div class="w-[90%] max-w-[1700px] mx-auto flex flex-wrap items-center gap-x-12 gap-y-4">
+    <p class="serif text-white" style="font-size:clamp(24px,2.2vw,35px)">Known from:</p>
+    <span class="text-white/80 font-extrabold tracking-widest text-lg">NEWS</span>
+    <span class="text-white/80 font-extrabold tracking-widest text-lg">DAILY</span>
+    <span class="text-white/80 font-extrabold tracking-widest text-lg">JOURNAL</span>
+    <span class="text-white/80 font-extrabold tracking-widest text-lg">PRESS</span>
+    <span class="text-white/80 font-extrabold tracking-widest text-lg">UNI&nbsp;PRESS</span>
+    <span class="text-white/80 font-extrabold tracking-widest text-lg">COLLEGE</span>
   </div>
 </section>
 
 <!-- ============ WHY ARE YOU HERE? ============ -->
-<section id="about" class="max-w-7xl mx-auto px-5 py-24">
-  <p class="reveal text-xs font-bold tracking-[0.3em] text-amber-600">WHY ARE YOU HERE?</p>
-  <h2 class="reveal text-4xl sm:text-5xl font-black mt-3">Every journey starts with a reason.</h2>
-  <p class="reveal text-lg text-stone-600 max-w-2xl mt-4">What is pushing your organization to move? Most teams come to us for one of two reasons — sometimes both.</p>
-
-  <div class="grid md:grid-cols-2 gap-6 mt-12">
-    <!-- Card 01 -->
-    <article class="reveal bg-white rounded-[24px] border-2 border-stone-200 shadow-[0_6px_0_#E7E0D2] hover:shadow-[0_16px_40px_rgba(30,42,50,0.15)] hover:-translate-y-1 transition p-8">
-      <div class="flex items-start justify-between">
-        <span class="text-6xl font-black text-amber-400">01</span>
-        <span class="bg-amber-100 rounded-2xl p-3" aria-hidden="true">
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><rect x="4" y="14" width="26" height="16" rx="3" fill="#1E2A32"/><path d="M12 14V9a5 5 0 0 1 10 0v5" stroke="#1E2A32" stroke-width="2.5"/></svg>
-        </span>
-      </div>
-      <h3 class="text-2xl font-black mt-6">Staying strong</h3>
-      <ul class="mt-4 space-y-3 text-stone-700 font-medium">
-        <li>— Holding your ground when prices and competition tighten</li>
-        <li>— Finding good people — and keeping them</li>
-        <li>— Meeting sustainability expectations without losing momentum</li>
-        <li>— Keeping up with change instead of chasing it</li>
-      </ul>
-    </article>
-    <!-- Card 02 -->
-    <article class="reveal reveal-d1 bg-[#1E2A32] text-white rounded-[24px] border-2 border-[#1E2A32] shadow-[0_6px_0_#0F1720] hover:shadow-[0_16px_40px_rgba(30,42,50,0.3)] hover:-translate-y-1 transition p-8">
-      <div class="flex items-start justify-between">
-        <span class="text-6xl font-black text-amber-400">02</span>
-        <span class="bg-white/10 rounded-2xl p-3" aria-hidden="true">
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><path d="M17 3L21 13H31L23 19L26 29L17 23L8 29L11 19L3 13H13L17 3Z" fill="#F2C14E"/></svg>
-        </span>
-      </div>
-      <h3 class="text-2xl font-black mt-6">Shaping the future</h3>
-      <ul class="mt-4 space-y-3 text-stone-300 font-medium">
-        <li>— Trying new ideas before they become obvious</li>
-        <li>— Becoming a place people genuinely want to work</li>
-        <li>— Making a real contribution to society</li>
-        <li>— Leading the way instead of following it</li>
-      </ul>
-    </article>
+<section id="why" class="bg-[#FAF6EE] relative" style="padding-top:clamp(120px,10vw,200px);padding-bottom:clamp(120px,10vw,200px)">
+  <!-- faint line mountains at edges -->
+  <svg class="absolute inset-y-0 left-0 h-full w-[18%] opacity-[0.12]" viewBox="0 0 200 600" preserveAspectRatio="none" aria-hidden="true"><path d="M0,600 L50,300 L100,450 L150,250 L200,400" fill="none" stroke="#0E2A1F" stroke-width="2"/></svg>
+  <svg class="absolute inset-y-0 right-0 h-full w-[18%] opacity-[0.12]" viewBox="0 0 200 600" preserveAspectRatio="none" aria-hidden="true"><path d="M200,600 L150,300 L100,450 L50,250 L0,400" fill="none" stroke="#0E2A1F" stroke-width="2"/></svg>
+  <div class="relative w-[90%] max-w-[1700px] mx-auto text-center">
+    <h2 class="word-rise serif font-black text-[#0E2A1F]" style="font-size:clamp(48px,6vw,90px)">Why are you here?</h2>
+    <p class="reveal text-[#0E2A1F]/70 max-w-2xl mx-auto mt-6" style="font-size:18px">Most teams arrive with one of two wishes in mind — sometimes both at once. Which one sounds like yours?</p>
+    <!-- Signpost -->
+    <div class="reveal relative mx-auto mt-16 w-full max-w-[900px]">
+      <svg viewBox="0 0 900 260" class="w-full" aria-hidden="true">
+        <rect x="445" y="10" width="10" height="250" fill="#0E2A1F"/>
+        <g>
+          <path d="M445,60 L120,60 L120,120 L445,120 L470,90 Z" fill="#FFC400"/>
+          <text x="280" y="103" text-anchor="middle" font-family="Inter" font-weight="800" font-size="42" fill="#0E2A1F">STABILITY</text>
+        </g>
+        <g>
+          <path d="M455,140 L780,140 L780,200 L455,200 L430,170 Z" fill="#FFC400"/>
+          <text x="620" y="183" text-anchor="middle" font-family="Inter" font-weight="800" font-size="42" fill="#0E2A1F">FUTURE</text>
+        </g>
+      </svg>
+    </div>
+    <!-- Two overlapping tilted cards -->
+    <div class="relative mt-8 md:mt-4 flex flex-col md:flex-row justify-center items-center md:items-start">
+      <article class="reveal relative z-10 w-full md:w-[45%] max-w-[620px] bg-[#8FA98F] text-left rounded-[28px] p-8 md:p-10 md:rotate-[-2deg] shadow-[0_20px_50px_rgba(14,42,31,0.18)]">
+        <span class="serif font-black text-[#FFC400]" style="font-size:36px">01</span>
+        <h3 class="word-rise serif font-black text-[#0E2A1F] mt-2" style="font-size:clamp(36px,3.5vw,55px)">Staying healthy</h3>
+        <ul class="mt-5 space-y-3 font-semibold text-[#0E2A1F]/85" style="font-size:20px">
+          <li><span class="text-[#FFC400] font-black">✓</span> Holding your ground when markets tighten</li>
+          <li><span class="text-[#FFC400] font-black">✓</span> Finding good people — and keeping them</li>
+          <li><span class="text-[#FFC400] font-black">✓</span> Meeting new expectations without losing pace</li>
+        </ul>
+      </article>
+      <article class="reveal relative z-20 w-full md:w-[45%] max-w-[620px] bg-[#0E2A1F] text-white text-left rounded-[28px] p-8 md:p-10 md:rotate-[2deg] md:-ml-16 md:mt-16 shadow-[0_20px_50px_rgba(14,42,31,0.3)]">
+        <span class="serif font-black text-[#FFC400]" style="font-size:36px">02</span>
+        <h3 class="word-rise serif font-black mt-2" style="font-size:clamp(36px,3.5vw,55px)">Shaping future</h3>
+        <ul class="mt-5 space-y-3 font-semibold text-white/85" style="font-size:20px">
+          <li><span class="text-[#FFC400] font-black">✓</span> Trying new ideas before they become obvious</li>
+          <li><span class="text-[#FFC400] font-black">✓</span> Becoming a place people truly want to work</li>
+          <li><span class="text-[#FFC400] font-black">✓</span> Leading the way instead of following it</li>
+        </ul>
+      </article>
+    </div>
+    <!-- Dashed trail looping down -->
+    <svg class="mx-auto mt-16 w-[300px] h-[120px]" viewBox="0 0 300 120" aria-hidden="true">
+      <path d="M150,0 C60,40 240,70 150,120" fill="none" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 16"/>
+    </svg>
   </div>
 </section>
 
-<!-- ============ CONCERNS + PARALLAX BAND ============ -->
-<section class="max-w-7xl mx-auto px-5 pb-24 text-center">
-  <h2 class="reveal text-3xl sm:text-5xl font-black leading-tight">Do any of these sound familiar?<br><span class="text-amber-500">Then let's climb the summit together.</span></h2>
-  <p class="reveal text-lg text-stone-600 max-w-2xl mx-auto mt-5">We work with organizations that want to reach the next level — teams looking for fresh approaches and a clearer way forward, for themselves, their people, and the world around them.</p>
-</section>
+<!-- ============ SUMMIT STATEMENT + APPROACH ============ -->
+<section id="approach" class="bg-[#0E2A1F] text-white relative" style="padding-top:clamp(120px,10vw,200px);padding-bottom:clamp(80px,6vw,140px)">
+  <div class="w-[90%] max-w-[1700px] mx-auto text-center relative">
+    <p class="word-rise script text-[#FFC400]" style="font-size:clamp(32px,3vw,45px)">Are these your concerns?</p>
+    <h2 class="word-rise serif font-black mt-2" style="font-size:clamp(48px,6vw,92px)">Climb the summit with us!</h2>
+    <p class="reveal text-white/80 max-w-[800px] mx-auto mt-6 leading-relaxed" style="font-size:19px">We walk beside organizations that want to reach the next level — with fresh approaches, honest feedback, and a clear route forward for their people and their purpose.</p>
+    <!-- Tilted circle overlapping first approach card -->
+    <div class="sun-circle relative z-30 mx-auto bg-[#FFC400] rounded-full flex items-center justify-center text-center" style="width:clamp(180px,15vw,240px);height:clamp(180px,15vw,240px);margin-bottom:-70px">
+      <p class="font-extrabold text-[#0E2A1F] leading-tight px-6" style="font-size:clamp(14px,1.2vw,18px)">TO TOP<br>START PROGRAM</p>
+    </div>
+  </div>
 
-<!-- Wide parallax band (self-drawn SVG valley scene) -->
-<section class="plx-scene h-[52vh] min-h-[340px]" aria-hidden="true">
-  <div class="plx-layer" data-speed="0.10">
-    <svg class="w-full h-full" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice">
-      <rect width="1440" height="520" fill="#DCE8F2"/>
-      <g fill="#ffffff" opacity="0.9"><ellipse cx="300" cy="110" rx="110" ry="26"/><ellipse cx="1000" cy="80" rx="130" ry="28"/></g>
-    </svg>
-  </div>
-  <div class="plx-layer" data-speed="0.28">
-    <svg class="w-full h-full" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice">
-      <path d="M0,340 L200,190 L400,320 L620,150 L840,310 L1060,180 L1280,320 L1440,230 L1440,520 L0,520 Z" fill="#8FA8C4"/>
-    </svg>
-  </div>
-  <div class="plx-layer" data-speed="0.45">
-    <svg class="w-full h-full" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice">
-      <path d="M0,430 L240,300 L480,420 L760,280 L1020,420 L1240,310 L1440,400 L1440,520 L0,520 Z" fill="#3E5C4B"/>
-      <path d="M240,410 C420,350 560,300 760,280 C900,268 1080,300 1240,310" fill="none" stroke="#F2C14E" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 18"/>
+  <!-- Approach cards 01–04 (each overlaps the previous) -->
+  <div class="w-[90%] max-w-[1700px] mx-auto">
+    <!-- 01 -->
+    <article class="reveal relative rounded-[32px] bg-[#14532D] overflow-hidden" style="min-height:clamp(480px,42vw,720px)">
+      <span class="ghost" style="font-size:clamp(180px,24vw,420px)">01</span>
+      <div class="relative p-8 md:p-14 max-w-[560px]">
+        <p class="script text-[#FFC400]" style="font-size:32px">our approach</p>
+        <h3 class="word-rise serif font-black mt-1" style="font-size:clamp(48px,6vw,88px)">Strategy</h3>
+        <p class="text-white/85 mt-4 leading-relaxed" style="font-size:21px">Where are you heading, and what will it take to get there? We sharpen the direction first — then the steps follow.</p>
+      </div>
+      <svg class="absolute bottom-0 left-0 w-full h-[38%]" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <path d="M0,300 L0,180 L240,60 L480,170 L720,40 L960,160 L1200,70 L1440,150 L1440,300 Z" fill="#1E6B3E"/>
+        <path d="M720,40 L780,110 L660,110 Z" fill="#ffffff" opacity="0.7"/>
+      </svg>
+      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 bottom-[16%] z-10 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </article>
+    <!-- 02 -->
+    <article class="reveal relative rounded-[32px] bg-[#7A7A4E] overflow-hidden -mt-10" style="min-height:clamp(480px,42vw,720px)">
+      <span class="ghost" style="font-size:clamp(180px,24vw,420px)">02</span>
+      <div class="relative p-8 md:p-14 max-w-[560px]">
+        <p class="script text-[#FFC400]" style="font-size:32px">our approach</p>
+        <h3 class="word-rise serif font-black mt-1" style="font-size:clamp(48px,6vw,88px)">Cultural development</h3>
+        <p class="text-white/85 mt-4 leading-relaxed" style="font-size:21px">Culture is what people do when nobody is watching. We help teams build habits that carry the strategy.</p>
+      </div>
+      <svg class="absolute bottom-0 left-0 w-full h-[38%]" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <path d="M0,300 L0,170 L260,50 L500,160 L760,45 L1000,150 L1240,60 L1440,140 L1440,300 Z" fill="#8A8A5E"/>
+      </svg>
+      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 bottom-[16%] z-10 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </article>
+    <!-- 03 -->
+    <article class="reveal relative rounded-[32px] bg-[#8FA98F] overflow-hidden -mt-10" style="min-height:clamp(480px,42vw,720px)">
+      <span class="ghost" style="font-size:clamp(180px,24vw,420px)">03</span>
+      <div class="relative p-8 md:p-14 max-w-[560px]">
+        <p class="script text-[#0E2A1F]" style="font-size:32px">our approach</p>
+        <h3 class="word-rise serif font-black text-[#0E2A1F] mt-1" style="font-size:clamp(48px,6vw,88px)">Guidance</h3>
+        <p class="text-[#0E2A1F]/85 mt-4 leading-relaxed" style="font-size:21px">Nobody climbs alone. Coaches and guides walk each stage with you, from the first step to the summit.</p>
+      </div>
+      <svg class="absolute bottom-0 left-0 w-full h-[38%]" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <path d="M0,300 L0,180 L240,60 L480,170 L720,40 L960,160 L1200,70 L1440,150 L1440,300 Z" fill="#A8C0A8"/>
+      </svg>
+      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 bottom-[16%] z-10 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </article>
+    <!-- 04 -->
+    <article class="reveal relative rounded-[32px] bg-[#1E4A3A] overflow-hidden -mt-10" style="min-height:clamp(480px,42vw,720px)">
+      <span class="ghost" style="font-size:clamp(180px,24vw,420px)">04</span>
+      <div class="relative p-8 md:p-14 max-w-[560px]">
+        <p class="script text-[#FFC400]" style="font-size:32px">our approach</p>
+        <h3 class="word-rise serif font-black mt-1" style="font-size:clamp(48px,6vw,88px)">Sustainability</h3>
+        <p class="text-white/85 mt-4 leading-relaxed" style="font-size:21px">A summit reached once is not enough. We build the routines that keep the climb going, season after season.</p>
+      </div>
+      <svg class="absolute bottom-0 left-0 w-full h-[38%]" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <path d="M0,300 L0,170 L260,50 L500,160 L760,45 L1000,150 L1240,60 L1440,140 L1440,300 Z" fill="#2A5A44"/>
+        <path d="M760,45 L820,115 L700,115 Z" fill="#ffffff" opacity="0.6"/>
+      </svg>
+      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 bottom-[16%] z-10 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </article>
+    <!-- vertical dashed trail linking cards -->
+    <svg class="mx-auto -mt-2 w-[60px] h-[100px]" viewBox="0 0 60 100" aria-hidden="true">
+      <path d="M30,0 L30,100" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 14"/>
+      <circle cx="30" cy="96" r="7" fill="#FFC400"/>
     </svg>
   </div>
 </section>
 
 <!-- ============ OFFERS ============ -->
-<section id="offers" class="max-w-7xl mx-auto px-5 py-24">
-  <p class="reveal text-xs font-bold tracking-[0.3em] text-amber-600">ON THE WAY</p>
-  <h2 class="reveal text-4xl sm:text-5xl font-black mt-3">Offers with which we accompany you</h2>
-  <p class="reveal text-lg text-stone-600 max-w-2xl mt-4">From large transformation programs to single focused measures — we pick the format that fits your goal.</p>
-
-  <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 mt-12">
-    <article class="reveal bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">01</span>
-      <h3 class="font-black text-lg mt-4">Transformation journeys</h3>
-      <p class="text-stone-600 text-sm mt-2 leading-relaxed">Long-term programs that move a whole organization forward, step by step.</p>
-    </article>
-    <article class="reveal reveal-d1 bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">02</span>
-      <h3 class="font-black text-lg mt-4">Workshops &amp; camps</h3>
-      <p class="text-stone-600 text-sm mt-2 leading-relaxed">Focused sessions where teams think, test, and decide together.</p>
-    </article>
-    <article class="reveal reveal-d2 bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">03</span>
-      <h3 class="font-black text-lg mt-4">Coaching</h3>
-      <p class="text-stone-600 text-sm mt-2 leading-relaxed">One-to-one support for leaders facing hard calls.</p>
-    </article>
-    <article class="reveal bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">04</span>
-      <h3 class="font-black text-lg mt-4">Tools &amp; self-tests</h3>
-      <p class="text-stone-600 text-sm mt-2 leading-relaxed">Practical instruments your team can use on its own.</p>
-    </article>
-    <article class="reveal reveal-d1 bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">05</span>
-      <h3 class="font-black text-lg mt-4">Sparring</h3>
-      <p class="text-stone-600 text-sm mt-2 leading-relaxed">A critical friend who challenges ideas before they go live.</p>
-    </article>
+<section id="offers" class="relative bg-[#3E6B3F] overflow-hidden" style="padding-top:clamp(120px,10vw,200px);padding-bottom:clamp(120px,10vw,200px)">
+  <!-- grass texture layer -->
+  <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,900 L0,700 Q180,640 360,700 T720,700 T1080,700 T1440,700 L1440,900 Z" fill="#2A4A28"/>
+  </svg>
+  <div class="relative w-[90%] max-w-[1700px] mx-auto text-center">
+    <p class="word-rise script text-[#FFC400]" style="font-size:clamp(34px,3.2vw,48px)">On the way:</p>
+    <h2 class="word-rise serif font-black text-white mt-2" style="font-size:clamp(48px,6.5vw,96px)">Offers with which<br>we accompany you</h2>
+    <p class="reveal text-white/85 max-w-[950px] mx-auto mt-6 leading-relaxed" style="font-size:20px">From a full transformation program to a single focused session — we choose the format that fits your goal, your people, and your timing.</p>
   </div>
-</section>
-
-<!-- ============ TESTIMONIALS ============ -->
-<section id="stories" class="bg-[#EFE9DB] py-24">
-  <div class="max-w-7xl mx-auto px-5">
-    <p class="reveal text-xs font-bold tracking-[0.3em] text-amber-600">WHAT OTHERS SAY</p>
-    <h2 class="reveal text-4xl sm:text-5xl font-black mt-3">Voices from the trail</h2>
-    <div class="grid md:grid-cols-3 gap-6 mt-12">
-      <figure class="reveal bg-white rounded-[22px] border-2 border-stone-200 p-7 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-        <blockquote class="text-lg font-medium leading-relaxed">"The whole organization gained focus — and the change actually stuck."</blockquote>
-        <figcaption class="mt-5 text-sm font-bold text-stone-500">— Managing Director, manufacturing company <span class="text-amber-500">(sample quote)</span></figcaption>
-      </figure>
-      <figure class="reveal reveal-d1 bg-white rounded-[22px] border-2 border-stone-200 p-7 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-        <blockquote class="text-lg font-medium leading-relaxed">"Clear thinking, honest challenge, and a plan we could really follow."</blockquote>
-        <figcaption class="mt-5 text-sm font-bold text-stone-500">— Head of People, logistics company <span class="text-amber-500">(sample quote)</span></figcaption>
-      </figure>
-      <figure class="reveal reveal-d2 bg-white rounded-[22px] border-2 border-stone-200 p-7 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-        <blockquote class="text-lg font-medium leading-relaxed">"They kept everyone involved from the first day to the last."</blockquote>
-        <figcaption class="mt-5 text-sm font-bold text-stone-500">— CEO, family business <span class="text-amber-500">(sample quote)</span></figcaption>
-      </figure>
+  <!-- yellow cloth behind cards -->
+  <div class="relative w-[90%] max-w-[1700px] mx-auto mt-16">
+    <div class="absolute inset-0 -mx-4 md:-mx-10 bg-[#F2D98C] rounded-[40px] rotate-[-0.6deg]" aria-hidden="true"></div>
+    <div class="relative grid md:grid-cols-2 gap-6 md:gap-8 p-6 md:p-12">
+      <!-- column 1 -->
+      <div class="space-y-6 md:space-y-8">
+        <article class="reveal bg-[#0E2A1F] text-white rounded-[28px] p-8 md:p-10 relative">
+          <span class="text-white/60 font-bold" style="font-size:18px">01</span>
+          <span class="absolute top-8 right-8 text-[#FFC400] text-3xl" aria-hidden="true">↗</span>
+          <h3 class="word-rise serif font-black mt-3" style="font-size:clamp(36px,3.8vw,60px)">Transformation support</h3>
+          <p class="text-white/75 mt-3 leading-relaxed" style="font-size:17px">Long programs that move a whole organization forward, stage by stage, with room to learn along the way.</p>
+          <a href="#contact" class="inline-flex items-center gap-2 mt-6 bg-white text-[#0E2A1F] font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="reveal bg-[#DCE8D5] text-[#0E2A1F] rounded-[28px] p-8 md:p-10 relative">
+          <span class="text-[#0E2A1F]/60 font-bold" style="font-size:18px">03</span>
+          <span class="absolute top-8 right-8 text-[#0E2A1F] text-3xl" aria-hidden="true">↗</span>
+          <h3 class="word-rise serif font-black mt-3" style="font-size:clamp(36px,3.8vw,60px)">Moderation &amp; large groups</h3>
+          <p class="text-[#0E2A1F]/75 mt-3 leading-relaxed" style="font-size:17px">Big rooms, many voices, one clear outcome — guided sessions where everyone is heard and decisions stick.</p>
+          <a href="#contact" class="inline-flex items-center gap-2 mt-6 bg-[#0E2A1F] text-white font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="reveal bg-[#8FA98F] text-[#0E2A1F] rounded-[28px] p-8 md:p-10 relative">
+          <span class="text-[#0E2A1F]/60 font-bold" style="font-size:18px">05</span>
+          <span class="absolute top-8 right-8 text-[#0E2A1F] text-3xl" aria-hidden="true">↗</span>
+          <h3 class="word-rise serif font-black mt-3" style="font-size:clamp(36px,3.8vw,60px)">Coaching</h3>
+          <p class="text-[#0E2A1F]/75 mt-3 leading-relaxed" style="font-size:17px">One-to-one support for leaders facing the hard calls — a steady sparring partner, not a lecture.</p>
+          <a href="#contact" class="inline-flex items-center gap-2 mt-6 bg-[#0E2A1F] text-white font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <!-- column 2 (staggered down) -->
+      <div class="space-y-6 md:space-y-8 md:mt-20">
+        <article class="reveal bg-[#F7EFD2] text-[#0E2A1F] rounded-[28px] p-8 md:p-10 relative">
+          <span class="text-[#0E2A1F]/60 font-bold" style="font-size:18px">02</span>
+          <span class="absolute top-8 right-8 text-[#0E2A1F] text-3xl" aria-hidden="true">↗</span>
+          <h3 class="word-rise serif font-black mt-3" style="font-size:clamp(36px,3.8vw,60px)">Workshop &amp; Training</h3>
+          <p class="text-[#0E2A1F]/75 mt-3 leading-relaxed" style="font-size:17px">Focused days where teams think, test, and decide together — and leave with something they can use on Monday.</p>
+          <a href="#contact" class="inline-flex items-center gap-2 mt-6 bg-[#0E2A1F] text-white font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="reveal bg-[#0E2A1F] text-white rounded-[28px] p-8 md:p-10 relative">
+          <span class="text-white/60 font-bold" style="font-size:18px">04</span>
+          <span class="absolute top-8 right-8 text-[#FFC400] text-3xl" aria-hidden="true">↗</span>
+          <h3 class="word-rise serif font-black mt-3" style="font-size:clamp(36px,3.8vw,60px)">Conflict resolution</h3>
+          <p class="text-white/75 mt-3 leading-relaxed" style="font-size:17px">When tensions block the path, we help teams name the real issue and find a way through it together.</p>
+          <a href="#contact" class="inline-flex items-center gap-2 mt-6 bg-white text-[#0E2A1F] font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ TEAM + WHAT MAKES US SPECIAL ============ -->
-<section id="team" class="max-w-7xl mx-auto px-5 py-24">
-  <p class="reveal text-xs font-bold tracking-[0.3em] text-amber-600">ABOUT US</p>
-  <h2 class="reveal text-4xl sm:text-5xl font-black mt-3">The people behind the climb</h2>
-  <p class="reveal text-lg text-stone-600 max-w-2xl mt-4">Two partners, one shared idea: organizations work best when people and results move forward together.</p>
+<!-- ============ TESTIMONIALS (carousel: arrows + dots + autoplay + drag-snap) ============ -->
+<section id="testimonials" class="bg-[#0E2A1F] text-white relative overflow-hidden" style="padding-top:clamp(120px,10vw,200px);padding-bottom:clamp(120px,10vw,200px)">
+  <div class="w-[90%] max-w-[1700px] mx-auto relative">
+    <button id="tPrev" aria-label="Previous quote" class="absolute left-0 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-[#FFC400] transition text-4xl md:text-5xl px-2">‹</button>
+    <button id="tNext" aria-label="Next quote" class="absolute right-0 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-[#FFC400] transition text-4xl md:text-5xl px-2">›</button>
+    <!-- SAMPLE QUOTES: placeholder wording only -->
+    <div id="tTrack" class="relative max-w-[1400px] mx-auto text-center px-10 md:px-20 select-none">
+      <figure class="t-slide active">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"Our whole organization gained focus — and this time, the change actually stayed."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— Managing Director, manufacturing company</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"Clear thinking, honest challenge, and a plan we could really follow."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— Head of People, logistics company</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"They kept everyone involved, from the first workshop to the last review."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— CEO, family business</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"The team finally talks about the hard things — openly, and without fear."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— Operations Lead, healthcare group</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"We arrived stuck. We left with a route everyone believed in."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— Founder, growing startup</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"Practical, human, and free of jargon — rare in this field."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— HR Director, public sector</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"Our leaders coach each other now. That alone changed the culture."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— Plant Manager, engineering firm</figcaption>
+      </figure>
+      <figure class="t-slide">
+        <blockquote class="serif italic leading-snug" style="font-size:clamp(24px,2.4vw,34px)">"A summit is easy to name. They taught us how to climb to it."</blockquote>
+        <figcaption class="script text-[#FFC400] mt-6" style="font-size:22px">— Board Member, nonprofit network</figcaption>
+      </figure>
+    </div>
+    <div id="tDots" class="flex items-center justify-center gap-3 mt-10"></div>
+    <p class="text-center text-white/40 text-sm mt-6">Drag or swipe the quote, use the arrows, or wait — slides advance on their own.</p>
+  </div>
+  <!-- cloud/mist rising into next section -->
+  <svg class="absolute bottom-0 left-0 w-full h-[90px]" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,90 L0,60 Q180,20 360,55 T720,50 T1080,55 T1440,45 L1440,90 Z" fill="#FAF6EE" opacity="0.9"/>
+  </svg>
+</section>
 
-  <div class="grid md:grid-cols-2 gap-6 mt-12">
-    <article class="reveal bg-white rounded-[24px] border-2 border-stone-200 p-8 flex gap-5 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="shrink-0 w-16 h-16 rounded-full bg-amber-400 text-[#1E2A32] font-black text-xl flex items-center justify-center">A&nbsp;M</span>
-      <div>
-        <h3 class="font-black text-xl">A. Meyer</h3>
-        <p class="text-sm font-bold text-amber-600">Consultant &amp; Lecturer</p>
-        <p class="text-stone-600 mt-2 leading-relaxed">Years of guiding teams through change — in the classroom and in the boardroom.</p>
+<!-- ============ ABOUT (valley scene) ============ -->
+<section id="about" class="plx-scene" style="min-height:110vh">
+  <div class="plx-layer" data-speed="0.08">
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <rect width="1440" height="900" fill="#C8DCC0"/>
+      <g fill="#ffffff" opacity="0.8"><ellipse cx="300" cy="140" rx="130" ry="26"/><ellipse cx="1050" cy="110" rx="150" ry="28"/></g>
+    </svg>
+  </div>
+  <div class="plx-layer" data-speed="0.25">
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0,620 L240,420 L480,560 L760,380 L1040,560 L1240,430 L1440,540 L1440,900 L0,900 Z" fill="#5B7A4E"/>
+    </svg>
+  </div>
+  <div class="plx-layer" data-speed="0.45">
+    <svg class="w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0,780 L280,640 L560,740 L840,620 L1120,730 L1440,660 L1440,900 L0,900 Z" fill="#2A4A28"/>
+      <g transform="translate(1240,640)">
+        <circle cx="0" cy="-14" r="10" fill="#0E2A1F"/>
+        <line x1="0" y1="-4" x2="0" y2="18" stroke="#0E2A1F" stroke-width="7" stroke-linecap="round"/>
+        <line x1="0" y1="18" x2="-11" y2="36" stroke="#0E2A1F" stroke-width="6" stroke-linecap="round"/>
+        <line x1="0" y1="18" x2="12" y2="34" stroke="#0E2A1F" stroke-width="6" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="relative z-10 w-[90%] max-w-[1700px] mx-auto pt-32 pb-40 text-white">
+    <!-- two circular portraits -->
+    <div class="flex items-start gap-6">
+      <div class="text-center">
+        <p class="script text-[#FFC400] mb-1" style="font-size:26px">Alex ↘</p>
+        <span class="block w-[140px] h-[140px] rounded-full bg-[#FFC400] text-[#0E2A1F] serif font-black text-4xl flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">A</span>
       </div>
+      <div class="text-center mt-10">
+        <p class="script text-[#FFC400] mb-1" style="font-size:26px">Sam ↘</p>
+        <span class="block w-[140px] h-[140px] rounded-full bg-white text-[#0E2A1F] serif font-black text-4xl flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">S</span>
+      </div>
+    </div>
+    <h2 class="word-rise serif font-black mt-14 max-w-[1200px] leading-[1.02]" style="font-size:clamp(48px,6vw,85px)">Accompaniment — about the people who walk with you</h2>
+    <p class="reveal mt-6 max-w-[45%] min-w-[300px] leading-relaxed text-white/90" style="font-size:17px">Two partners, one shared idea: organizations work best when people and results move forward together. Research in one hand, real rooms full of real people in the other.</p>
+    <p class="word-rise script text-[#FFC400] mt-16" style="font-size:clamp(36px,3.8vw,55px)">What makes us special ↓</p>
+  </div>
+</section>
+
+<!-- ============ WHAT MAKES US SPECIAL (bars) ============ -->
+<section class="bg-black text-white" style="padding-top:clamp(80px,6vw,120px);padding-bottom:clamp(80px,6vw,120px)">
+  <div class="w-[82%] max-w-[1500px] mx-auto space-y-5">
+    <article class="reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-8 bg-[#14532D] rounded-[24px] px-8 py-7" style="min-height:140px">
+      <span class="font-bold text-white/70" style="font-size:16px">01</span>
+      <h3 class="word-rise serif font-black flex-1" style="font-size:clamp(26px,2.6vw,40px)">Scientific and practical experience</h3>
+      <p class="md:text-right md:max-w-[320px] text-white/75" style="font-size:17px">Grounded in research, built for rooms full of real people.</p>
     </article>
-    <article class="reveal reveal-d1 bg-white rounded-[24px] border-2 border-stone-200 p-8 flex gap-5 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="shrink-0 w-16 h-16 rounded-full bg-[#5B7A6B] text-white font-black text-xl flex items-center justify-center">C&nbsp;B</span>
-      <div>
-        <h3 class="font-black text-xl">C. Berger</h3>
-        <p class="text-sm font-bold text-amber-600">Former Top Manager</p>
-        <p class="text-stone-600 mt-2 leading-relaxed">Led large organizations through growth, crisis, and renewal — and knows both sides of the table.</p>
-      </div>
+    <article class="reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-8 bg-[#DCE8D5] text-[#0E2A1F] rounded-[24px] px-8 py-7" style="min-height:140px">
+      <span class="font-bold text-[#0E2A1F]/60" style="font-size:16px">02</span>
+      <h3 class="word-rise serif font-black flex-1" style="font-size:clamp(26px,2.6vw,40px)">Strategy, culture and sustainability</h3>
+      <p class="md:text-right md:max-w-[320px] text-[#0E2A1F]/75" style="font-size:17px">Goals, people, and responsibility held in one picture.</p>
+    </article>
+    <article class="reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-8 bg-[#F7EFD2] text-[#0E2A1F] rounded-[24px] px-8 py-7" style="min-height:140px">
+      <span class="font-bold text-[#0E2A1F]/60" style="font-size:16px">03</span>
+      <h3 class="word-rise serif font-black flex-1" style="font-size:clamp(26px,2.6vw,40px)">Personal and professional</h3>
+      <p class="md:text-right md:max-w-[320px] text-[#0E2A1F]/75" style="font-size:17px">Direct, curious, and human — serious about results, light in tone.</p>
+    </article>
+    <article class="reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-8 bg-[#8FA98F] text-[#0E2A1F] rounded-[24px] px-8 py-7" style="min-height:140px">
+      <span class="font-bold text-[#0E2A1F]/60" style="font-size:16px">04</span>
+      <h3 class="word-rise serif font-black flex-1" style="font-size:clamp(26px,2.6vw,40px)">Strong partners</h3>
+      <p class="md:text-right md:max-w-[320px] text-[#0E2A1F]/75" style="font-size:17px">A network of experienced specialists to call on when it counts.</p>
     </article>
   </div>
+</section>
 
-  <h3 class="reveal text-3xl font-black mt-20">What makes us special</h3>
-  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-8">
-    <article class="reveal bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 transition">
-      <span class="text-4xl font-black text-amber-400">01</span>
-      <h4 class="font-black mt-3">Scientific &amp; practical experience</h4>
-      <p class="text-stone-600 text-sm mt-2">Grounded in research, built for real life.</p>
-    </article>
-    <article class="reveal reveal-d1 bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 transition">
-      <span class="text-4xl font-black text-amber-400">02</span>
-      <h4 class="font-black mt-3">Strategy, culture &amp; sustainability</h4>
-      <p class="text-stone-600 text-sm mt-2">Goals, people, and responsibility in one picture.</p>
-    </article>
-    <article class="reveal reveal-d2 bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 transition">
-      <span class="text-4xl font-black text-amber-400">03</span>
-      <h4 class="font-black mt-3">Personal &amp; professional</h4>
-      <p class="text-stone-600 text-sm mt-2">Direct, curious, and human — serious about results, light in tone.</p>
-    </article>
-    <article class="reveal bg-white rounded-[22px] border-2 border-stone-200 p-6 hover:-translate-y-1 transition">
-      <span class="text-4xl font-black text-amber-400">04</span>
-      <h4 class="font-black mt-3">Strong partners</h4>
-      <p class="text-stone-600 text-sm mt-2">A network of experienced specialists to call on when needed.</p>
-    </article>
+<!-- ============ FOREST INTERSTITIAL ============ -->
+<section class="relative bg-[#0E2A1F] overflow-hidden" style="min-height:90vh">
+  <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <rect width="1440" height="800" fill="#0E2A1F"/>
+    <g fill="#3E6B3F">
+      <ellipse cx="120" cy="300" rx="180" ry="320"/><ellipse cx="1320" cy="300" rx="180" ry="320"/>
+      <ellipse cx="60" cy="550" rx="140" ry="240"/><ellipse cx="1380" cy="550" rx="140" ry="240"/>
+    </g>
+    <g fill="#6B8F5E">
+      <ellipse cx="180" cy="650" rx="220" ry="180"/><ellipse cx="1260" cy="650" rx="220" ry="180"/>
+    </g>
+    <rect y="720" width="1440" height="80" fill="#5B7A4E"/>
+  </svg>
+  <!-- dashed trail down the center -->
+  <svg class="absolute left-1/2 -translate-x-1/2 top-0 h-full w-[200px]" viewBox="0 0 200 800" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M100,0 C40,150 160,300 100,450 C40,600 160,700 100,800" fill="none" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 18"/>
+  </svg>
+  <div class="relative z-10 flex items-center justify-end w-[90%] max-w-[1700px] mx-auto" style="min-height:90vh">
+    <div class="sun-circle bg-[#FFC400] rounded-full flex items-center justify-center text-center mr-[8%]" style="width:clamp(180px,15vw,230px);height:clamp(180px,15vw,230px)">
+      <p class="font-extrabold text-[#0E2A1F] leading-tight px-6" style="font-size:clamp(14px,1.2vw,18px)">MORE ABOUT<br>TO TOP</p>
+    </div>
   </div>
 </section>
 
 <!-- ============ FANCY A TASTE? ============ -->
-<section class="max-w-7xl mx-auto px-5 pb-24">
-  <p class="reveal text-xs font-bold tracking-[0.3em] text-amber-600">FANCY A TASTE?</p>
-  <h2 class="reveal text-4xl sm:text-5xl font-black mt-3">Try one or more appetizers. Help yourself.</h2>
-  <div class="grid md:grid-cols-3 gap-6 mt-12">
-    <article class="reveal bg-white rounded-[22px] border-2 border-stone-200 p-7 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">01</span>
-      <h3 class="font-black text-xl mt-4">Reading sample</h3>
-      <p class="text-stone-600 mt-2">A free chapter from our book on building humane organizations.</p>
-      <a href="#" class="inline-block mt-5 bg-[#1E2A32] text-white font-bold px-5 py-2.5 rounded-full text-sm hover:bg-amber-500 hover:text-[#1E2A32] transition">Get the sample</a>
-    </article>
-    <article class="reveal reveal-d1 bg-white rounded-[22px] border-2 border-stone-200 p-7 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">02</span>
-      <h3 class="font-black text-xl mt-4">Media</h3>
-      <p class="text-stone-600 mt-2">Books, articles, and videos from our work — browse at your own pace.</p>
-      <a href="#" class="inline-block mt-5 bg-[#1E2A32] text-white font-bold px-5 py-2.5 rounded-full text-sm hover:bg-amber-500 hover:text-[#1E2A32] transition">Browse media</a>
-    </article>
-    <article class="reveal reveal-d2 bg-white rounded-[22px] border-2 border-stone-200 p-7 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(30,42,50,0.14)] transition">
-      <span class="text-4xl font-black text-amber-400">03</span>
-      <h3 class="font-black text-xl mt-4">Downloads &amp; Newsletter</h3>
-      <p class="text-stone-600 mt-2">Self-tests, tools, and a short monthly letter. No spam, just ideas.</p>
-      <form class="mt-5 flex gap-2" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks — demo form';">
-        <input type="email" required placeholder="Your email" class="flex-1 min-w-0 border-2 border-stone-300 rounded-full px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-amber-500">
-        <button class="bg-amber-400 font-bold px-5 py-2.5 rounded-full text-sm hover:bg-amber-500 transition shrink-0">Subscribe</button>
-      </form>
-    </article>
+<section id="taste" class="relative bg-[#0E2A1F] text-white overflow-hidden" style="padding-bottom:clamp(120px,10vw,200px)">
+  <svg class="absolute bottom-0 left-0 w-full h-[120px] opacity-30" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,120 L0,70 Q200,20 400,60 T800,60 T1200,60 T1440,60 L1440,120 Z" fill="#5B7A4E"/>
+  </svg>
+  <div class="relative w-[90%] max-w-[1700px] mx-auto grid lg:grid-cols-2 gap-12 items-start">
+    <div>
+      <h2 class="word-rise serif font-black" style="font-size:clamp(48px,6vw,90px)">Fancy a taste?</h2>
+      <p class="reveal mt-6 max-w-[45%] min-w-[300px] leading-relaxed text-white/85" style="font-size:20px">Before the full climb, try a small step. A chapter, a talk, a tool — each one free, each one useful on its own.</p>
+      <svg class="mt-14 w-[260px] h-[110px]" viewBox="0 0 260 110" aria-hidden="true">
+        <path d="M20,10 C120,40 60,80 220,100" fill="none" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 16"/>
+      </svg>
+    </div>
+    <div class="relative">
+      <article class="reveal bg-[#DCE8D5] text-[#0E2A1F] rounded-[28px] p-8 md:p-10 relative rotate-[-1.5deg] shadow-[0_20px_50px_rgba(0,0,0,0.35)]" style="max-width:620px">
+        <span class="absolute top-6 right-8 font-bold text-[#0E2A1F]/50" style="font-size:18px">01</span>
+        <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Reading sample</h3>
+        <p class="mt-3 leading-relaxed text-[#0E2A1F]/75" style="font-size:17px">A free chapter on building organizations where people and results grow together.</p>
+        <a href="#contact" class="inline-block mt-5 bg-[#0E2A1F] text-white font-extrabold px-5 py-2.5 rounded-full text-sm">GET THE SAMPLE</a>
+      </article>
+      <article class="reveal bg-[#0E2A1F] text-white border-2 border-white/15 rounded-[28px] p-8 md:p-10 relative rotate-[1.5deg] -mt-6 ml-auto shadow-[0_20px_50px_rgba(0,0,0,0.35)]" style="max-width:620px">
+        <span class="absolute top-6 right-8 font-bold text-white/50" style="font-size:18px">02</span>
+        <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Media</h3>
+        <p class="mt-3 leading-relaxed text-white/75" style="font-size:17px">Talks, articles, and short videos from our work — browse at your own pace.</p>
+        <a href="#contact" class="inline-flex items-center gap-2 mt-5 bg-white text-[#0E2A1F] font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="reveal bg-[#F7EFD2] text-[#0E2A1F] rounded-[28px] p-8 md:p-10 relative rotate-[-1deg] -mt-6 shadow-[0_20px_50px_rgba(0,0,0,0.35)]" style="max-width:620px">
+        <span class="absolute top-6 right-8 font-bold text-[#0E2A1F]/50" style="font-size:18px">03</span>
+        <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Downloads &amp; Newsletter</h3>
+        <p class="mt-3 leading-relaxed text-[#0E2A1F]/75" style="font-size:17px">Self-tests, tools, and a short monthly letter. No spam — just ideas worth a minute.</p>
+        <form class="mt-5 flex gap-2" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks — demo form';">
+          <input type="email" required placeholder="Your email" class="flex-1 min-w-0 border-2 border-[#0E2A1F]/25 rounded-full px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-[#0E2A1F]">
+          <button class="bg-[#FFC400] font-extrabold px-5 py-2.5 rounded-full text-sm hover:bg-[#ffd54a] transition shrink-0">Subscribe</button>
+        </form>
+      </article>
+    </div>
   </div>
 </section>
 
-<!-- ============ CLOSING CTA: fullwidth parallax summit scene ============ -->
-<section id="contact" class="plx-scene bg-[#1E2A32] text-white">
-  <div class="plx-layer" data-speed="0.08">
-    <svg class="w-full h-full" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <rect width="1440" height="640" fill="#24343E"/>
-      <g fill="#ffffff" opacity="0.14"><ellipse cx="280" cy="110" rx="120" ry="26"/><ellipse cx="1050" cy="90" rx="140" ry="28"/></g>
-      <circle cx="1180" cy="120" r="52" fill="#F2C14E" opacity="0.9"/>
-    </svg>
+<!-- ============ COME WITH US (cream + line map) ============ -->
+<section class="relative bg-[#FAF6EE] overflow-hidden" style="padding-top:clamp(120px,10vw,200px);padding-bottom:clamp(120px,10vw,200px)">
+  <svg class="absolute inset-0 w-full h-full opacity-[0.14]" viewBox="0 0 1440 800" preserveAspectRatio="none" aria-hidden="true">
+    <g fill="none" stroke="#0E2A1F" stroke-width="2">
+      <path d="M100,600 L200,400 L300,550 L400,350 L500,550"/>
+      <path d="M1100,600 L1200,420 L1300,560"/>
+      <circle cx="700" cy="300" r="60"/><path d="M700,240 L700,180 M670,210 L730,210"/>
+      <path d="M150,700 Q250,660 350,700 T550,700 T750,700 T950,700 T1150,700 T1350,700"/>
+      <path d="M880,520 L920,480 L960,520 M920,480 L920,450"/>
+    </g>
+    <text x="1020" y="200" font-family="Inter" font-weight="800" font-size="64" fill="#0E2A1F">X</text>
+  </svg>
+  <div class="relative w-[90%] max-w-[1700px] mx-auto grid md:grid-cols-2 gap-10 items-start">
+    <h2 class="word-rise serif font-black text-[#0E2A1F] leading-[1.02]" style="font-size:clamp(44px,5vw,75px)">Come with us —<br>let's climb new peaks together now!</h2>
+    <p class="reveal text-[#0E2A1F]/75 leading-relaxed md:max-w-[70%] md:ml-auto" style="font-size:22px">Wherever you stand today, the next stage is a conversation away. Bring your questions; we bring the map.</p>
   </div>
-  <div class="plx-layer" data-speed="0.25">
-    <svg class="w-full h-full" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <path d="M0,460 L240,280 L460,410 L720,200 L980,400 L1200,260 L1440,400 L1440,640 L0,640 Z" fill="#3A4F5A"/>
-      <path d="M720,200 L790,290 L650,290 Z" fill="#ffffff" opacity="0.35"/>
+  <div class="relative mt-20 text-center">
+    <svg class="mx-auto w-[300px] h-[130px]" viewBox="0 0 300 130" aria-hidden="true">
+      <path d="M150,0 C60,40 240,80 150,130" fill="none" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 16"/>
     </svg>
-  </div>
-  <div class="plx-layer" data-speed="0.45">
-    <svg class="w-full h-full" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <path d="M0,540 L260,400 L520,520 L800,380 L1080,510 L1300,420 L1440,490 L1440,640 L0,640 Z" fill="#16232B"/>
-      <!-- summit flag -->
-      <g transform="translate(720,200)">
-        <line x1="0" y1="0" x2="0" y2="-64" stroke="#F2C14E" stroke-width="5" stroke-linecap="round"/>
-        <path class="flag-wave" d="M0,-64 L46,-54 L0,-42 Z" fill="#F2C14E"/>
-      </g>
-      <!-- dotted path to summit -->
-      <path d="M120,600 C300,540 420,470 560,430 C640,405 680,330 720,280" fill="none" stroke="#F2C14E" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 18"/>
-    </svg>
-  </div>
-  <div class="relative z-10 max-w-7xl mx-auto px-5 py-32 text-center">
-    <h2 class="reveal text-4xl sm:text-6xl font-black leading-tight">Let's climb new peaks<br>together now!</h2>
-    <p class="reveal text-lg text-stone-300 max-w-xl mx-auto mt-5">Wherever you are on the journey, we can plan the next stages with you and explore new paths.</p>
-    <div class="reveal flex flex-wrap justify-center gap-3 mt-8">
-      <a href="#" class="bg-amber-400 text-[#1E2A32] font-bold px-7 py-3.5 rounded-full hover:bg-amber-300 transition">Book a conversation</a>
-      <a href="mailto:hello@example.com" class="border-2 border-white/40 font-bold px-7 py-3.5 rounded-full hover:bg-white/10 transition">hello@example.com</a>
+    <div class="inline-block relative">
+      <span class="block w-[110px] h-[110px] rounded-full bg-[#FFC400] text-[#0E2A1F] serif font-black text-3xl flex items-center justify-center mx-auto">↑</span>
+      <p class="script text-[#0E2A1F] mt-2" style="font-size:28px">the hiker, mid-journey</p>
     </div>
-    <p class="reveal text-stone-400 font-semibold mt-6">Phone (sample): +00 000 000 000</p>
+    <!-- rock cut-outs breaking the grid -->
+    <span class="absolute left-0 bottom-0 w-[180px] h-[90px] bg-[#8A8A7A] rounded-tr-full" aria-hidden="true"></span>
+    <span class="absolute right-0 bottom-0 w-[180px] h-[90px] bg-[#8A8A7A] rounded-tl-full" aria-hidden="true"></span>
+  </div>
+</section>
+
+<!-- ============ EVERY JOURNEY BEGINS ============ -->
+<section class="bg-[#FAF6EE] text-center" style="padding-bottom:clamp(120px,10vw,200px)">
+  <div class="w-[90%] max-w-[1700px] mx-auto">
+    <h2 class="word-rise serif font-black text-[#0E2A1F] leading-[1.05]" style="font-size:clamp(48px,6vw,92px)">EVERY JOURNEY BEGINS<br>WITH THE FIRST STEP.<br><em>WE GO WITH YOU!</em></h2>
+    <p class="reveal text-[#0E2A1F]/75 max-w-[70%] mx-auto mt-8 leading-relaxed" style="font-size:clamp(20px,1.8vw,27px)">Not just at the top — on the right top. The step you take today decides the view you get tomorrow.</p>
+    <p class="reveal serif font-black text-[#0E2A1F] mt-10" style="font-size:38px">Let's go.</p>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="relative">
+  <!-- snowy peak scene -->
+  <div class="relative h-[46vh] min-h-[320px] overflow-hidden">
+    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <rect width="1440" height="500" fill="#DCE8F2"/>
+      <path d="M0,500 L0,300 L240,120 L480,280 L720,80 L980,280 L1200,140 L1440,300 L1440,500 Z" fill="#8FA8C4"/>
+      <path d="M720,80 L800,180 L640,180 Z" fill="#ffffff"/>
+      <path d="M240,120 L300,190 L180,190 Z" fill="#ffffff" opacity="0.9"/>
+      <path d="M1200,140 L1260,210 L1140,210 Z" fill="#ffffff" opacity="0.9"/>
+    </svg>
+  </div>
+  <!-- white card overlapping the scene -->
+  <div class="relative bg-[#FAF6EE] -mt-[100px]">
+    <div class="w-[90%] max-w-[1700px] mx-auto bg-white rounded-t-[24px] shadow-[0_-10px_50px_rgba(14,42,31,0.12)] px-6 md:px-14 pt-14 pb-20 relative">
+      <h2 class="word-rise serif font-black text-[#0E2A1F] text-center" style="font-size:clamp(44px,4.8vw,70px)">Ready for the journey together?</h2>
+      <p class="word-rise script text-[#0E2A1F] text-center mt-2" style="font-size:clamp(30px,2.8vw,42px)">Tell us where you want to go.</p>
+      <p class="reveal text-[#0E2A1F]/70 text-center max-w-[600px] mx-auto mt-5 leading-relaxed" style="font-size:22px">One conversation, no obligation — we will help you see the first stage clearly.</p>
+      <!-- contact strip -->
+      <div class="reveal flex flex-col md:flex-row items-center justify-between gap-4 bg-[#F7EFD2] rounded-[20px] px-8 py-6 mt-12">
+        <span class="font-extrabold text-[#0E2A1F]">Contact us</span>
+        <a href="mailto:hello@example.com" class="font-bold underline underline-offset-4">hello@example.com</a>
+        <span class="font-bold">+00 000 000 000</span>
+        <a href="#contact" class="font-bold underline underline-offset-4">Book a date</a>
+      </div>
+      <!-- backpack cut-out + form card overlapping -->
+      <div class="relative mt-14 flex flex-col lg:flex-row items-start gap-8">
+        <span class="hidden lg:flex w-[120px] h-[120px] rounded-full bg-[#FFC400] text-[#0E2A1F] serif font-black text-4xl items-center justify-center shrink-0 -rotate-6" aria-hidden="true">🎒</span>
+        <form class="w-full lg:w-[55%] ml-auto bg-[#0E2A1F] text-white rounded-[24px] p-8" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks — demo form';">
+          <p class="serif font-black text-2xl">Start the conversation</p>
+          <input type="text" required placeholder="Your name" class="w-full mt-5 bg-white/10 border border-white/25 rounded-full px-5 py-3 text-sm placeholder:text-white/50 focus:outline-none focus:border-[#FFC400]">
+          <input type="email" required placeholder="Your email" class="w-full mt-3 bg-white/10 border border-white/25 rounded-full px-5 py-3 text-sm placeholder:text-white/50 focus:outline-none focus:border-[#FFC400]">
+          <textarea placeholder="Where do you want to go?" rows="3" class="w-full mt-3 bg-white/10 border border-white/25 rounded-[20px] px-5 py-3 text-sm placeholder:text-white/50 focus:outline-none focus:border-[#FFC400]"></textarea>
+          <button class="mt-5 bg-[#FFC400] text-[#0E2A1F] font-extrabold px-7 py-3 rounded-full text-sm hover:bg-[#ffd54a] transition">Send message</button>
+        </form>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ============ FOOTER ============ -->
-<footer class="bg-[#121C22] text-stone-400">
-  <div class="max-w-7xl mx-auto px-5 py-12 text-center">
-    <p class="font-black tracking-[0.2em] text-white text-lg">TO&nbsp;TOP</p>
-    <p class="text-sm mt-3">Sample layout demo in the spirit of to-top.ch — placeholder text and self-drawn artwork. Replace with your own content.</p>
-    <div class="flex justify-center gap-6 text-sm font-semibold mt-5">
-      <a href="#about" class="hover:text-white">About</a>
-      <a href="#offers" class="hover:text-white">Offers</a>
-      <a href="#contact" class="hover:text-white">Contact</a>
+<footer class="bg-[#FAF6EE] relative overflow-hidden">
+  <svg class="absolute left-0 top-0 h-full w-[40%] opacity-[0.1]" viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,400 L80,200 L160,320 L240,150 L320,300 L400,220" fill="none" stroke="#0E2A1F" stroke-width="2"/>
+  </svg>
+  <div class="relative w-[90%] max-w-[1700px] mx-auto pt-16 pb-8">
+    <p class="script text-[#0E2A1F]" style="font-size:55px">Here we go! ↑</p>
+    <p class="serif font-black text-[#0E2A1F] text-center tracking-wide mt-6" style="font-size:clamp(40px,5.5vw,85px)">FOR BETTER ORGANIZATIONS</p>
+    <nav class="flex flex-wrap justify-center gap-x-10 gap-y-3 border-y-2 border-dotted border-[#0E2A1F]/30 py-5 mt-10 text-[14px] font-bold tracking-wider">
+      <a href="#why" class="hover:text-[#14532D]">WHY HERE</a>
+      <a href="#approach" class="hover:text-[#14532D]">APPROACH</a>
+      <a href="#offers" class="hover:text-[#14532D]">OFFERS</a>
+      <a href="#about" class="hover:text-[#14532D]">ABOUT</a>
+      <a href="#contact" class="hover:text-[#14532D]">CONTACT</a>
+    </nav>
+    <div class="flex flex-col md:flex-row justify-between gap-6 mt-10">
+      <p class="serif font-black tracking-[0.2em] text-lg">TO&nbsp;TOP</p>
+      <p class="md:max-w-[35%] text-[#0E2A1F]/70 leading-relaxed" style="font-size:16px">Sample layout demo in the spirit of the reference site — placeholder wording and self-drawn artwork. Replace with your own content before publishing.</p>
+    </div>
+    <div class="flex flex-wrap justify-between items-center gap-4 mt-8">
+      <div class="flex gap-3">
+        <span class="w-9 h-9 rounded-full bg-[#0E2A1F] text-white flex items-center justify-center text-sm font-bold">in</span>
+        <span class="w-9 h-9 rounded-full bg-[#0E2A1F] text-white flex items-center justify-center text-sm font-bold">▶</span>
+        <span class="w-9 h-9 rounded-full bg-[#0E2A1F] text-white flex items-center justify-center text-sm font-bold">@</span>
+      </div>
+      <div class="flex gap-6 text-[16px] font-semibold text-[#0E2A1F]/70">
+        <a href="#" class="hover:text-[#0E2A1F]">Legal notice</a>
+        <a href="#" class="hover:text-[#0E2A1F]">Privacy</a>
+        <a href="#" class="hover:text-[#0E2A1F]">Credits</a>
+      </div>
     </div>
   </div>
+  <div class="bg-[#0E2A1F] text-white/70 text-center py-4 text-sm">Sample demo — placeholder content only</div>
 </footer>
 
 <script>
-  // Smooth scroll (Lenis) + parallax + reveal.
-  // HARD LESSON (from the /app page): lenis@1.1.14 has NO autoRaf option.
-  // Init plain and drive lenis.raf() inside our own rAF loop — never autoRaf.
+  // Smooth scroll (Lenis) + parallax + word-rise reveal + carousel + header hide/show.
+  // HARD LESSON: lenis@1.1.14 has NO built-in automatic rAF mode. Init plain, drive lenis.raf() in our own rAF loop.
   (function () {
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var lenis = null;
     if (!reduced && typeof window.Lenis !== 'undefined') {
       try { lenis = new window.Lenis(); } catch (e) { lenis = null; }
     }
+    // Anchor smooth scroll.
     document.querySelectorAll('a[href^="#"]').forEach(function (a) {
       a.addEventListener('click', function (ev) {
         var id = a.getAttribute('href');
         if (id.length > 1) {
           var t = document.querySelector(id);
-          if (t) {
-            ev.preventDefault();
-            if (lenis) { lenis.scrollTo(t); }
-            else { t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); }
-          }
+          if (t) { ev.preventDefault(); if (lenis) { lenis.scrollTo(t, { offset: -90 }); } else { t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); } }
         }
       });
     });
-    // Parallax on rAF with translate3d (GPU) — never layout properties.
+    // ---- Word-rise: split every .word-rise heading into word spans ----
+    document.querySelectorAll('.word-rise').forEach(function (h) {
+      var words = h.textContent.trim().split(/\s+/);
+      h.innerHTML = '';
+      words.forEach(function (w, i) {
+        var wrap = document.createElement('span');
+        wrap.className = 'wr';
+        var inner = document.createElement('span');
+        inner.textContent = w;
+        if (!reduced) { inner.style.transitionDelay = (i * 60) + 'ms'; }
+        wrap.appendChild(inner);
+        h.appendChild(wrap);
+        h.appendChild(document.createTextNode(' '));
+      });
+    });
+    // ---- Reveal observer (word-rise + fade-up) ----
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.word-rise, .reveal').forEach(function (el) { io.observe(el); });
+    // ---- Header hide on scroll down / show on scroll up ----
+    var header = document.getElementById('pillHeader');
+    var lastY = window.scrollY;
+    function onScrollDir() {
+      var y = window.scrollY;
+      if (y > lastY && y > 240) { header.classList.add('hidden-pill'); }
+      else if (y < lastY) { header.classList.remove('hidden-pill'); }
+      lastY = y;
+    }
+    window.addEventListener('scroll', onScrollDir, { passive: true });
+    // ---- Testimonial carousel: arrows + dots + autoplay + drag-snap ----
+    var track = document.getElementById('tTrack');
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.t-slide'));
+    var dotsWrap = document.getElementById('tDots');
+    var cur = 0, timer = null, dragging = false, startX = 0, dx = 0;
+    slides.forEach(function (_, i) {
+      var d = document.createElement('button');
+      d.className = 't-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Go to quote ' + (i + 1));
+      d.addEventListener('click', function () { go(i); restart(); });
+      dotsWrap.appendChild(d);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.t-dot'));
+    function go(i) {
+      slides[cur].classList.remove('active');
+      dots[cur].classList.remove('active');
+      cur = (i + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dots[cur].classList.add('active');
+      slides[cur].style.transform = '';
+    }
+    function restart() { if (timer) { clearInterval(timer); } if (!reduced) { timer = setInterval(function () { go(cur + 1); }, 7000); } }
+    document.getElementById('tPrev').addEventListener('click', function () { go(cur - 1); restart(); });
+    document.getElementById('tNext').addEventListener('click', function () { go(cur + 1); restart(); });
+    track.addEventListener('pointerdown', function (e) { dragging = true; startX = e.clientX; dx = 0; track.classList.add('dragging'); track.setPointerCapture(e.pointerId); });
+    track.addEventListener('pointermove', function (e) {
+      if (!dragging) { return; }
+      dx = e.clientX - startX;
+      slides[cur].style.transform = 'translateX(' + dx + 'px)';
+    });
+    function endDrag() {
+      if (!dragging) { return; }
+      dragging = false; track.classList.remove('dragging');
+      if (dx < -60) { go(cur + 1); } else if (dx > 60) { go(cur - 1); } else { slides[cur].style.transform = ''; }
+      restart();
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    restart();
+    // ---- Parallax + Lenis rAF loop ----
     var scenes = Array.prototype.slice.call(document.querySelectorAll('.plx-scene'));
     function small() { return window.innerWidth < 768; }
     function tick(time) {
@@ -396,13 +738,12 @@
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
-    // Scroll reveal.
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    // ---- Preloader fade ----
+    window.addEventListener('load', function () {
+      setTimeout(function () { document.getElementById('preloader').classList.add('done'); }, reduced ? 0 : 500);
+    });
+    // Fallback: never trap the user behind the preloader.
+    setTimeout(function () { document.getElementById('preloader').classList.add('done'); }, 4000);
   })();
 </script>
 </body>
