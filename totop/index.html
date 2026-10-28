@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TO TOP — Sample (layout demo v4)</title>
+<title>TO TOP — Sample (layout demo v5)</title>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +70,7 @@
   }
 </style>
 </head>
-<body class="bg-[#FAF6EE] text-[#0E2A1F] antialiased overflow-x-hidden">
+<body class="bg-[#FAF6EE] text-[#0E2A1F] antialiased overflow-x-clip">
 
 <!-- ============ PRELOADER ============ -->
 <div id="preloader" aria-hidden="true">
@@ -218,14 +218,14 @@
     <p class="reveal text-white/80 max-w-[800px] mx-auto mt-6 leading-relaxed" style="font-size:19px">We walk beside organizations that want to reach the next level — with fresh approaches, honest feedback, and a clear route forward for their people and their purpose.</p>
   </div>
 
-  <!-- Approach cards 01–04 (each overlaps the previous) -->
-  <div class="relative w-[90%] max-w-[1700px] mx-auto mt-16">
+  <!-- Approach cards 01–04 (scroll-stacking deck: separated at rest, each card sticks as the next slides over it) -->
+  <div class="relative w-[90%] max-w-[1700px] mx-auto mt-16 flex flex-col gap-10">
     <!-- Tilted circle straddling the first card's top-right edge (~46% above it) -->
     <div class="sun-circle absolute z-30 bg-[#FFC400] rounded-full flex items-center justify-center text-center" style="width:clamp(180px,15vw,240px);height:clamp(180px,15vw,240px);top:-110px;right:6%">
       <p class="font-extrabold text-[#0E2A1F] leading-tight px-6" style="font-size:clamp(14px,1.2vw,18px)">TO TOP<br>START PROGRAM</p>
     </div>
     <!-- 01 -->
-    <div class="relative">
+    <div class="relative z-10" style="position:sticky;top:96px">
     <article class="reveal relative rounded-[20px] bg-[#14532D] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">01</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
@@ -238,10 +238,9 @@
       </div>
 
     </article>
-      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
     </div>
     <!-- 02 -->
-    <div class="relative -mt-10">
+    <div class="relative z-20" style="position:sticky;top:116px">
     <article class="reveal relative rounded-[20px] bg-[#7A7A4E] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">02</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
@@ -254,10 +253,10 @@
       </div>
 
     </article>
-      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -top-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
     </div>
     <!-- 03 -->
-    <div class="relative -mt-10">
+    <div class="relative z-30" style="position:sticky;top:136px">
     <article class="reveal relative rounded-[20px] bg-[#8FA98F] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">03</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
@@ -270,10 +269,10 @@
       </div>
 
     </article>
-      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -top-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
     </div>
     <!-- 04 -->
-    <div class="relative -mt-10">
+    <div class="relative z-40" style="position:sticky;top:156px">
     <article class="reveal relative rounded-[20px] bg-[#1E4A3A] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">04</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
@@ -286,10 +285,10 @@
       </div>
 
     </article>
-      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -top-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
     </div>
     <!-- vertical dashed trail linking cards -->
-    <svg class="mx-auto -mt-2 w-[60px] h-[100px]" viewBox="0 0 60 100" aria-hidden="true">
+    <svg class="mx-auto mt-6 w-[60px] h-[100px]" viewBox="0 0 60 100" aria-hidden="true">
       <path d="M30,0 L30,100" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 14"/>
       <circle cx="30" cy="96" r="7" fill="#FFC400"/>
     </svg>
@@ -492,7 +491,7 @@
 </section>
 
 <!-- ============ FANCY A TASTE? ============ -->
-<section id="taste" class="relative bg-[#0E2A1F] text-white overflow-hidden" style="padding-bottom:clamp(120px,10vw,200px)">
+<section id="taste" class="relative bg-[#0E2A1F] text-white overflow-x-clip" style="padding-bottom:clamp(120px,10vw,200px)">
   <svg class="absolute bottom-0 left-0 w-full h-[120px] opacity-30" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0,120 L0,70 Q200,20 400,60 T800,60 T1200,60 T1440,60 L1440,120 Z" fill="#5B7A4E"/>
   </svg>
@@ -504,20 +503,20 @@
         <path d="M20,10 C120,40 60,80 220,100" fill="none" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 16"/>
       </svg>
     </div>
-    <div class="relative flex flex-col gap-6">
-      <article class="reveal relative z-10 w-full bg-[#DCE8D5] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+    <div class="relative flex flex-col gap-8">
+      <article class="reveal relative z-10 w-full bg-[#DCE8D5] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]" style="position:sticky;top:96px">
         <span class="absolute top-6 right-8 font-bold text-[#0E2A1F]/50" style="font-size:18px">01</span>
         <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Reading sample</h3>
         <p class="mt-3 leading-relaxed text-[#0E2A1F]/75" style="font-size:17px">A free chapter on building organizations where people and results grow together.</p>
         <a href="#contact" class="inline-block mt-5 bg-[#0E2A1F] text-white font-extrabold px-5 py-2.5 rounded-full text-sm">GET THE SAMPLE</a>
       </article>
-      <article class="reveal relative z-20 w-full bg-[#0E2A1F] text-white border-2 border-white/15 rounded-[20px] p-8 md:p-10 rotate-[1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+      <article class="reveal relative z-20 w-full bg-[#0E2A1F] text-white border-2 border-white/15 rounded-[20px] p-8 md:p-10 rotate-[1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]" style="position:sticky;top:116px">
         <span class="absolute top-6 right-8 font-bold text-white/50" style="font-size:18px">02</span>
         <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Media</h3>
         <p class="mt-3 leading-relaxed text-white/75" style="font-size:17px">Talks, articles, and short videos from our work — browse at your own pace.</p>
         <a href="#contact" class="inline-flex items-center gap-2 mt-5 bg-white text-[#0E2A1F] font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
       </article>
-      <article class="reveal relative z-30 w-full bg-[#F7EFD2] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+      <article class="reveal relative z-30 w-full bg-[#F7EFD2] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]" style="position:sticky;top:136px">
         <span class="absolute top-6 right-8 font-bold text-[#0E2A1F]/50" style="font-size:18px">03</span>
         <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Downloads &amp; Newsletter</h3>
         <p class="mt-3 leading-relaxed text-[#0E2A1F]/75" style="font-size:17px">Self-tests, tools, and a short monthly letter. No spam — just ideas worth a minute.</p>
