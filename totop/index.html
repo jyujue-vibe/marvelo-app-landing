@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TO TOP — Sample (layout demo v3)</title>
+<title>TO TOP — Sample (layout demo v4)</title>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,36 +18,53 @@
   #preloader { position: fixed; inset: 0; z-index: 100; background: #0E2A1F; display: flex; align-items: center; justify-content: center; transition: opacity .8s ease; }
   #preloader.done { opacity: 0; pointer-events: none; }
   /* ---- Header pill: hides on scroll down, returns on scroll up ---- */
-  #pillHeader { transition: transform .5s ease; }
-  #pillHeader.hidden-pill { transform: translateY(-160%); }
+  #pillHeader { transition: transform .45s ease, opacity .45s ease; will-change: transform, opacity; }
+  #pillHeader.hidden-pill { transform: translateY(-160%); opacity: 0; }
   /* ---- Word-rise text reveal (JS splits headings into .wr words) ---- */
   .word-rise .wr { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-  .word-rise .wr > span { display: inline-block; transform: translateY(115%); transition: transform .75s cubic-bezier(.22,1,.36,1); will-change: transform; }
-  .word-rise.visible .wr > span { transform: translateY(0); }
+  .word-rise .wr > span { display: inline-block; opacity: 0; transform: translateY(28px); transition: opacity .8s ease-out, transform .8s ease-out; will-change: opacity, transform; }
+  .word-rise.in-view .wr > span { opacity: 1; transform: translateY(0); }
   /* ---- Plain fade-up reveal for bodies/cards ---- */
-  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
-  .reveal.visible { opacity: 1; transform: none; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in-view { opacity: 1; transform: none; }
   /* ---- Parallax ---- */
   .plx-scene { position: relative; overflow: hidden; }
   .plx-layer { position: absolute; left: 0; width: 100%; height: 120%; top: -10%; will-change: transform; }
   /* ---- Tilted glowing yellow circles ---- */
-  .sun-circle { transform: rotate(-12deg); box-shadow: 0 0 60px rgba(255,196,0,.55), 0 0 140px rgba(255,196,0,.3); }
+  .sun-circle { transform: rotate(-12deg); box-shadow: 0 0 60px rgba(255,196,0,.55), 0 0 140px rgba(255,196,0,.3); transition: transform .35s ease; }
+  .sun-circle:hover { transform: rotate(-12deg) scale(1.04); }
   /* ---- Ghost numbers ---- */
   .ghost { position: absolute; top: 0.3em; right: 0.5em; font-family: 'Fraunces', Georgia, serif; font-weight: 900; line-height: 1; color: rgba(255,255,255,.14); pointer-events: none; user-select: none; }
   /* ---- Testimonial carousel ---- */
-  #tTrack { touch-action: pan-y; cursor: grab; }
+  #tTrack { display: grid; touch-action: pan-y; cursor: grab; }
   #tTrack.dragging { cursor: grabbing; }
-  .t-slide { position: absolute; inset: 0; opacity: 0; transform: translateX(40px); transition: opacity .55s ease, transform .55s ease; pointer-events: none; }
-  .t-slide.active { position: relative; opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .t-dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.35); transition: all .3s ease; }
+  #tTrack.dragging .t-slide { transition: none; }
+  .t-slide { grid-area: 1 / 1; opacity: 0; transform: translateX(40px); transition: opacity .6s ease, transform .6s ease; pointer-events: none; }
+  .t-slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .t-dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.35); transition: width .3s ease, height .3s ease, background-color .3s ease; }
   .t-dot.active { width: 16px; height: 16px; background: #FFC400; }
   /* ---- Torn / jagged edges ---- */
   .torn-bottom { position: absolute; left: 0; bottom: -1px; width: 100%; height: 46px; }
+  /* ---- Hover transitions: cards lift, pills fade + arrows slide, circles scale ---- */
+  a { transition: color .3s ease, background-color .3s ease; }
+  article { transition: transform .35s ease, box-shadow .35s ease; }
+  article:hover, article.reveal.in-view:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(14,42,31,.18); }
+  article.reveal.in-view:hover { transition: transform .35s ease, box-shadow .35s ease, opacity .7s ease; }
+  a.rounded-full, button.rounded-full { transition: color .3s ease, background-color .3s ease, border-color .3s ease, transform .3s ease; }
+  a.rounded-full span[aria-hidden="true"] { display: inline-block; transition: transform .3s ease; }
+  a.rounded-full:hover span[aria-hidden="true"] { transform: translateX(4px); }
+  .lm-circle { transition: transform .35s ease; }
+  .lm-circle:hover { transform: scale(1.04); }
+  #tPrev, #tNext { transition: color .3s ease, transform .3s ease; }
+  #tPrev:hover, #tNext:hover { transform: scale(1.15); }
   @keyframes drift { from { transform: translateX(-2%); } to { transform: translateX(2%); } }
   .cloud-drift { animation: drift 16s ease-in-out infinite alternate; }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
-    .word-rise .wr > span { transform: none; transition: none; }
+    .word-rise .wr > span { opacity: 1; transform: none; transition: none; }
+    article, article:hover, article.reveal.in-view:hover { transition: none; transform: none; box-shadow: none; }
+    .sun-circle:hover, .lm-circle:hover, #tPrev:hover, #tNext:hover { transform: none; }
+    a.rounded-full:hover span[aria-hidden="true"] { transform: none; }
     .cloud-drift { animation: none; }
     #preloader { transition: none; }
   }
@@ -208,6 +225,7 @@
       <p class="font-extrabold text-[#0E2A1F] leading-tight px-6" style="font-size:clamp(14px,1.2vw,18px)">TO TOP<br>START PROGRAM</p>
     </div>
     <!-- 01 -->
+    <div class="relative">
     <article class="reveal relative rounded-[20px] bg-[#14532D] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">01</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
@@ -218,10 +236,13 @@
       <div class="absolute bottom-0 left-0 w-full h-[38%] overflow-hidden rounded-b-[20px] bg-[#1E6B3E]" aria-hidden="true">
         <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1800&auto=format&fit=crop" alt="" onerror="this.remove()" class="w-full h-full object-cover">
       </div>
-      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-30 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+
     </article>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </div>
     <!-- 02 -->
-    <article class="reveal relative rounded-[20px] bg-[#7A7A4E] overflow-visible -mt-10" style="min-height:clamp(480px,42vw,720px)">
+    <div class="relative -mt-10">
+    <article class="reveal relative rounded-[20px] bg-[#7A7A4E] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">02</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
         <p class="script text-[#FFC400]" style="font-size:32px">our approach</p>
@@ -231,10 +252,13 @@
       <div class="absolute bottom-0 left-0 w-full h-[38%] overflow-hidden rounded-b-[20px] bg-[#8A8A5E]" aria-hidden="true">
         <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1800&auto=format&fit=crop" alt="" onerror="this.remove()" class="w-full h-full object-cover">
       </div>
-      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-30 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+
     </article>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </div>
     <!-- 03 -->
-    <article class="reveal relative rounded-[20px] bg-[#8FA98F] overflow-visible -mt-10" style="min-height:clamp(480px,42vw,720px)">
+    <div class="relative -mt-10">
+    <article class="reveal relative rounded-[20px] bg-[#8FA98F] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">03</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
         <p class="script text-[#0E2A1F]" style="font-size:32px">our approach</p>
@@ -244,10 +268,13 @@
       <div class="absolute bottom-0 left-0 w-full h-[38%] overflow-hidden rounded-b-[20px] bg-[#A8C0A8]" aria-hidden="true">
         <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1800&auto=format&fit=crop" alt="" onerror="this.remove()" class="w-full h-full object-cover">
       </div>
-      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-30 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+
     </article>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </div>
     <!-- 04 -->
-    <article class="reveal relative rounded-[20px] bg-[#1E4A3A] overflow-visible -mt-10" style="min-height:clamp(480px,42vw,720px)">
+    <div class="relative -mt-10">
+    <article class="reveal relative rounded-[20px] bg-[#1E4A3A] overflow-visible" style="min-height:clamp(480px,42vw,720px)">
       <span class="ghost" style="font-size:clamp(180px,24vw,420px)">04</span>
       <div class="relative p-8 md:p-14 max-w-[560px]">
         <p class="script text-[#FFC400]" style="font-size:32px">our approach</p>
@@ -257,8 +284,10 @@
       <div class="absolute bottom-0 left-0 w-full h-[38%] overflow-hidden rounded-b-[20px] bg-[#2A5A44]" aria-hidden="true">
         <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1800&auto=format&fit=crop" alt="" onerror="this.remove()" class="w-full h-full object-cover">
       </div>
-      <a href="#offers" class="absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-30 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+
     </article>
+      <a href="#offers" class="lm-circle absolute left-1/2 -translate-x-1/2 -bottom-[55px] z-50 bg-[#FFC400] text-[#0E2A1F] font-extrabold rounded-full flex items-center justify-center text-center rotate-[-12deg] shadow-[0_0_40px_rgba(255,196,0,0.5)]" style="width:110px;height:110px;font-size:13px">LEARN<br>MORE</a>
+    </div>
     <!-- vertical dashed trail linking cards -->
     <svg class="mx-auto -mt-2 w-[60px] h-[100px]" viewBox="0 0 60 100" aria-hidden="true">
       <path d="M30,0 L30,100" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 14"/>
@@ -475,20 +504,20 @@
         <path d="M20,10 C120,40 60,80 220,100" fill="none" stroke="#FFC400" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 16"/>
       </svg>
     </div>
-    <div class="relative">
+    <div class="relative flex flex-col gap-6">
       <article class="reveal relative z-10 w-full bg-[#DCE8D5] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
         <span class="absolute top-6 right-8 font-bold text-[#0E2A1F]/50" style="font-size:18px">01</span>
         <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Reading sample</h3>
         <p class="mt-3 leading-relaxed text-[#0E2A1F]/75" style="font-size:17px">A free chapter on building organizations where people and results grow together.</p>
         <a href="#contact" class="inline-block mt-5 bg-[#0E2A1F] text-white font-extrabold px-5 py-2.5 rounded-full text-sm">GET THE SAMPLE</a>
       </article>
-      <article class="reveal relative z-20 w-full bg-[#0E2A1F] text-white border-2 border-white/15 rounded-[20px] p-8 md:p-10 rotate-[1deg] -mt-28 shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+      <article class="reveal relative z-20 w-full bg-[#0E2A1F] text-white border-2 border-white/15 rounded-[20px] p-8 md:p-10 rotate-[1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
         <span class="absolute top-6 right-8 font-bold text-white/50" style="font-size:18px">02</span>
         <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Media</h3>
         <p class="mt-3 leading-relaxed text-white/75" style="font-size:17px">Talks, articles, and short videos from our work — browse at your own pace.</p>
         <a href="#contact" class="inline-flex items-center gap-2 mt-5 bg-white text-[#0E2A1F] font-extrabold px-5 py-2.5 rounded-full text-sm">LEARN MORE <span aria-hidden="true">→</span></a>
       </article>
-      <article class="reveal relative z-30 w-full bg-[#F7EFD2] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] -mt-28 shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
+      <article class="reveal relative z-30 w-full bg-[#F7EFD2] text-[#0E2A1F] rounded-[20px] p-8 md:p-10 rotate-[-1deg] shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
         <span class="absolute top-6 right-8 font-bold text-[#0E2A1F]/50" style="font-size:18px">03</span>
         <h3 class="word-rise serif font-black" style="font-size:clamp(32px,3.4vw,55px)">Downloads &amp; Newsletter</h3>
         <p class="mt-3 leading-relaxed text-[#0E2A1F]/75" style="font-size:17px">Self-tests, tools, and a short monthly letter. No spam — just ideas worth a minute.</p>
@@ -646,7 +675,7 @@
     // ---- Reveal observer (word-rise + fade-up) ----
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); }
+        if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); }
       });
     }, { threshold: 0.15 });
     document.querySelectorAll('.word-rise, .reveal').forEach(function (el) { io.observe(el); });
